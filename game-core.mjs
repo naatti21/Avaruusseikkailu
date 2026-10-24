@@ -64,6 +64,12 @@ export function dock(s){
     return {...s,scene:'station',mission:'delivered',credits:s.credits+240};
   return {...s,scene:'station'};
 }
+// Safe fallback after fuel runs out in an uninhabited system.
+export function emergencyTow(s){
+  if(s.fuel!==0||s.scene!=='flight')return s;
+  return {...s,system:'kestrel',scene:'station',distance:110,yaw:0,pitch:0,
+    fuel:1,credits:Math.max(0,s.credits-35)};
+}
 export function refuel(s){
   if(s.scene!=='station'||s.fuel===MAX_FUEL)return s;
   const cost=s.credits>=12?12:0; // emergency fuel prevents a stranded player

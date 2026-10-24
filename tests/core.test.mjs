@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {initialState,restore,generatedName,linked,acceptMission,jump,dock,launch,scan,scanReady,
-  nameDiscovery,bodyName,refuel,upgradeScanner} from '../game-core.mjs';
+  nameDiscovery,bodyName,refuel,emergencyTow,upgradeScanner} from '../game-core.mjs';
 test('same id has deterministic generated name',()=>assert.equal(generatedName('orion'),generatedName('orion')));
 test('safe recovery from bad data',()=>{assert.equal(restore('invalid').system,'kestrel');assert.equal(restore('{"schema":99}').system,'kestrel');});
 test('only linked systems may be jumped to and fuel is consumed',()=>{
@@ -45,4 +45,12 @@ test('scanner upgrades at a dock and improves scan reach',()=>{
 test('emergency fuel does not strand penniless player',()=>{
   const s={...initialState(),fuel:0,credits:0};
   const r=refuel(s);assert.equal(r.fuel,1);assert.equal(r.credits,0);
+});
+test('stranded deep-space flight can get an emergency tow',()=>{
+  const atOrion=jump(jump(initialState(),'vela'),'orion');
+  const stuck={...atOrion,credits:20,fuel:0};
+  const rescued=emergencyTow(stuck);
+  assert.equal(rescued.system,'kestrel');assert.equal(rescued.scene,'station');
+  assert.equal(rescued.fuel,1);assert.equal(rescued.credits,0);
+  assert.equal(emergencyTow(rescued),rescued);
 });

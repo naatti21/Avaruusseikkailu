@@ -30,8 +30,9 @@ Combat is optional and not the primary loop.
 2. Courier delivers and pays exactly once, reload does not duplicate reward.
 3. Fuel is deducted for legal hyperspace hops; a zero-credit stranded player can recover at a station.
 4. A researched planet gets one local custom name; default identity remains deterministic.
-5. Project test command: npm test; PR runs quality workflow.
-6. Independent mobile playtest and browser/offline QA remain pending; no release/merge without explicit user GO.
+5. Depleted fuel in flight allows a paid/discounted emergency tow back to Kestrel Port.
+6. Project test command: npm test; PR runs quality workflow.
+7. Independent mobile playtest and browser/offline QA remain pending; no release/merge without explicit user GO.
 
 ## Local data
 Browser localStorage key avaruusseikkailu-save-v1; schema=1. Do not use this store for online identity or claim adjudication. Unknown or invalid saves reset in memory to a fresh start; there is no backup/import in v0.1. Avoid using real personal data for planet names during testing.

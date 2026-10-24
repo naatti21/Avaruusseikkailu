@@ -1,5 +1,5 @@
 import {SYSTEMS,LINKS,MAX_FUEL,system,linked,generatedName,targetAngles,initialState,restore,
-  acceptMission,launch,jump,dock,refuel,upgradeScanner,scan,scanReady,nameDiscovery,clamp,bodyName} from './game-core.mjs';
+  acceptMission,launch,jump,dock,refuel,emergencyTow,upgradeScanner,scan,scanReady,nameDiscovery,clamp,bodyName} from './game-core.mjs';
 
 const $=id=>document.getElementById(id);
 const canvas=$('space'),ctx=canvas.getContext('2d');
@@ -93,7 +93,9 @@ function renderMap(){
     btn.addEventListener('click',()=>{const next=jump(state,item.id);tab='cockpit';update(next,'Hyppy suoritettu: '+item.name);});
     map.append(btn);
   }overlay.append(map);
-  if(state.fuel===0)button('Polttoaine lopussa · palaa asemalle',()=>{tab='cockpit';render();},'secondary');
+  if(state.fuel===0&&state.scene==='flight')button('Hätähinaus · Kestrel Port',()=>{
+    tab='cockpit';update(emergencyTow(state),'Hätähinaus suoritettu. Hinta enintään 35 cr.');
+  },'secondary');
   else button('Takaisin ohjaamoon',()=>{tab='cockpit';render();},'secondary');
 }
 function renderLog(){
