@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="fi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#080f1b">
+  <meta name="description" content="Avaruusseikkailu – kevyt mobiiliavaruuspelin prototyyppi.">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="stylesheet" href="./styles.css">
+  <title>Avaruusseikkailu · prototyyppi</title>
+</head>
+<body>
+  <div id="game">
+    <header class="topbar">
+      <div><div class="eyebrow">AVARUUSSEIKKAILU <span class="alpha">ALPHA 0.1</span></div><h1 id="where">Kestrel Port</h1></div>
+      <div class="resources"><span id="credits">150 cr</span><span id="fuel">⚡ 6/6</span></div>
+    </header>
+    <main>
+      <div id="viewport" aria-label="Avaruusnäkymä. Lennä vetämällä sormella.">
+        <canvas id="space"></canvas>
+        <div class="hud"><span id="sector">KESTREL</span><span id="distance">—</span></div>
+        <div id="overlay"></div>
+        <div class="reticle" aria-hidden="true"></div>
+        <div class="hint" id="hint"></div>
+      </div>
+      <section class="panel" id="panel" aria-live="polite"></section>
+      <section class="actions" id="actions" aria-label="Toiminnot"></section>
+      <p class="notice" id="notice" role="status"></p>
+    </main>
+    <nav class="bottomnav" aria-label="Pelinäkymät">
+      <button data-tab="cockpit" class="active" type="button">✦ <span>Lento</span></button>
+      <button data-tab="map" type="button">◇ <span>Kartta</span></button>
+      <button data-tab="log" type="button">▤ <span>Loki</span></button>
+    </nav>
+  </div>
+  <dialog id="naming">
+    <form method="dialog" id="naming-form">
+      <div class="eyebrow">ENSIMMÄINEN KARTOITUS</div>
+      <h2>Anna planeetalle nimi</h2>
+      <p>Generoitu nimi: <strong id="suggested-name"></strong>. Nimi lukitaan tässä offline-tallennuksessa ensimmäisen valinnan jälkeen.</p>
+      <label for="planet-name">Oma nimi (3–26 merkkiä)</label>
+      <input id="planet-name" name="name" minlength="3" maxlength="26" autocomplete="off" placeholder="Tai jätä generoitu nimi">
+      <p id="name-error" class="validation"></p>
+      <div class="dialog-actions"><button value="cancel" type="button" id="name-skip">Pidä oletus</button><button value="confirm" type="submit">Tallenna nimi</button></div>
+    </form>
+  </dialog>
+  <script type="module" src="./app.mjs"></script>
+</body>
+</html>
