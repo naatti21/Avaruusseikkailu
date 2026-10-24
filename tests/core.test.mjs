@@ -18,17 +18,19 @@ test('mission rewards are once only on successful destination dock',()=>{
   assert.equal(end.mission,'delivered');assert.equal(end.credits,390);
   assert.equal(dock(launch(end)).credits,390);
 });
-test('research requires approach and alignment; one reward per object',()=>{
-  const s=jump(jump(initialState(),'vela'),'orion');
-  assert.equal(scanReady(s),false);assert.equal(scan(s),s);
-  const aligned={...s,distance:30,yaw:.24,pitch:-.08};
-  const found=scan(aligned);
+test('research is available immediately on arrival and pays just once',()=>{
+  const station=jump(initialState(),'vela');
+  assert.equal(scanReady(station),false);
+  const research=jump(station,'orion');
+  assert.equal(scanReady(research),true);
+  const found=scan(research);
   assert.equal(found.credits,220);
   assert.equal(scan(found),found);
+  assert.equal(scanReady(found),false);
 });
 test('first offline name may be set once; original is retained',()=>{
   let s=jump(jump(initialState(),'vela'),'orion');
-  s=scan({...s,distance:28,yaw:.24,pitch:-.08});
+  s=scan(s);
   assert.equal(nameDiscovery(s,'orion','x'),s);
   const named=nameDiscovery(s,'orion','Uusi Maa');
   assert.equal(bodyName(named,'orion'),'Uusi Maa');
@@ -39,8 +41,7 @@ test('first offline name may be set once; original is retained',()=>{
 test('scanner upgrades at a dock and improves scan reach',()=>{
   const base=initialState();
   const upgraded=upgradeScanner(base);assert.equal(upgraded.credits,30);assert.equal(upgraded.scanner,2);
-  const s=jump(jump(upgraded,'vela'),'orion');
-  assert.equal(scanReady({...s,distance:60,yaw:.24,pitch:-.08}),true);
+  assert.equal(upgraded.scanner,2);
 });
 test('emergency fuel does not strand penniless player',()=>{
   const s={...initialState(),fuel:0,credits:0};

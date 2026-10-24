@@ -1,6 +1,6 @@
 # Avaruusseikkailu – APP-SPEC
 
-Version: 0.1, 2026-10-24. Common app playbook: v1.9.2.
+Version: 0.1.1, 2026-10-24. Common app playbook: v1.9.2.
 
 ## Game promise
 A mobile-first space career adventure inspired by trading/exploration, not by MMO complexity:
@@ -8,7 +8,7 @@ missions, legal and illicit cargo later, exploration, discoveries, and ship deve
 Combat is optional and not the primary loop.
 
 ## Design decisions
-- Short local free flight while exploring or approaching a station; automatic longer hops.
+- Intended later: meaningful free flight while exploring or approaching a station; automatic longer hops. Current prototype deliberately removes empty free flight.
 - Three main sections: cockpit/station, star map, log. Avoid menu nesting.
 - Credible discoveries plus infrequent authored mysteries (future).
 - Deterministically generated default planet name. Offline discoverer may submit one custom name in local save.
@@ -19,14 +19,14 @@ Combat is optional and not the primary loop.
 ## Prototype v0.1 (not the final architecture)
 - One predefined four-system hyperlane network, two stations, two research bodies.
 - Single delivery mission: Kestrel Port -> Vela Junction, +240 credits only once.
-- Drag-to-look free flight, press-and-hold approach, assisted docking, instant map jumps.
-- Scan when aligned and near, +70 credits once per planet; rename once per local save.
+- Direct map jumps; clear station-arrival/dock step and direct planet surveying. No pointless drag-to-look or press-and-hold thrust.
+- Survey directly on arrival, +70 credits once per planet; rename once per local save.
 - 1 scanner upgrade, refuel, flight log. Deterministic names and local storage.
-- Rendered 2D canvas with perspective effects: flight-feel validation, NOT a 3D physics engine.
+- Rendered 2D canvas as atmospheric backdrop only. This build tests mission/map/discovery loop, NOT flight handling or 3D physics.
 - No multiplayer, NPC combat, smuggling, politics, procedural billions of systems or backend yet.
 
 ## Acceptance
-1. Mobile viewport (~360–430 px) is navigable without hidden menus.
+1. Mobile viewport (~360–430 px) is navigable without hidden menus and unnecessary free-flying controls.
 2. Courier delivers and pays exactly once, reload does not duplicate reward.
 3. Fuel is deducted for legal hyperspace hops; a zero-credit stranded player can recover at a station.
 4. A researched planet gets one local custom name; default identity remains deterministic.

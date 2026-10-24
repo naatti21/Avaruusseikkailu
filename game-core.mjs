@@ -81,11 +81,7 @@ export function upgradeScanner(s){
   return {...s,credits:s.credits-120,scanner:2};
 }
 export function scanReady(s){
-  if(s.scene!=='flight'||!system(s.system).body||s.discoveries[s.system]?.found)return false;
-  const a=targetAngles(s.system);
-  return s.distance<=(s.scanner===2?68:40)&&
-    Math.abs(s.yaw-a.yaw)<=(s.scanner===2?.23:.15)&&
-    Math.abs(s.pitch-a.pitch)<=(s.scanner===2?.23:.15);
+  return s.scene==='flight'&&!!system(s.system)?.body&&!s.discoveries[s.system]?.found;
 }
 export function scan(s){
   if(!scanReady(s))return s;
