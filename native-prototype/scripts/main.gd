@@ -166,10 +166,10 @@ func _build_3d() -> void:
 	outpost.name = "RemoteOutpost"
 	outpost.position = STATION_LOCATION
 	add_child(outpost)
-	_box(outpost, Vector3.ZERO, Vector3(18.0, 3.8, 8.0), steel)
+	_box(outpost, Vector3.ZERO, Vector3(10.0, 3.8, 8.0), steel)
 	_box(outpost, Vector3(0.0, 3.0, -1.0), Vector3(7.0, 3.0, 6.0), dark)
-	_box(outpost, Vector3(-12.0, 0.0, -2.0), Vector3(8.0, 0.3, 6.0), dark)
-	_box(outpost, Vector3(12.0, 0.0, -2.0), Vector3(8.0, 0.3, 6.0), dark)
+	_box(outpost, Vector3(-7.0, 0.0, -2.0), Vector3(4.0, 0.3, 6.0), dark)
+	_box(outpost, Vector3(7.0, 0.0, -2.0), Vector3(4.0, 0.3, 6.0), dark)
 	_box(outpost, Vector3(0.0, 0.0, 4.5), Vector3(5.0, 0.8, 1.0), yellow)
 	_sphere(outpost, Vector3(0.0, 5.0, 0.0), 1.0, teal)
 	_floating_label(outpost, "FREEPORT 17", Vector3(0.0, 8.0, 0.0))
@@ -271,9 +271,9 @@ func _build_ui() -> void:
 
 
 func _resource_line() -> String:
-	return "%d cr   •   jäähdyte %d   •   runko %d%%   •   aika %d" % [
+	return "%d cr   •   jäähdyte %d   •   runko %d%%   •   lämpö %d   •   aika %d" % [
 		int(resources["credits"]), int(resources["coolant"]),
-		int(resources["hull"]), int(resources["time"])
+		int(resources["hull"]), int(resources["heat"]), int(resources["time"])
 	]
 
 

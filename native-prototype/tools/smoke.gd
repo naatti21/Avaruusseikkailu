@@ -23,7 +23,8 @@ func _run() -> void:
 	await process_frame
 	var ok := true
 	ok = _assert(stage.ship_length_units <= 4.0, "ship length") and ok
-	ok = _assert(stage.capital_diameter_units >= 80.0, "capital is enormous relative to ship") and ok
+	ok = _assert(stage.capital_diameter_units / stage.ship_length_units >= 25.0, "capital exceeds ship by >=25x") and ok
+	ok = _assert(stage.camera.projection == Camera3D.PROJECTION_PERSPECTIVE, "perspective camera") and ok
 	ok = _assert(stage.outpost_diameter_units >= 12.0, "outpost scale") and ok
 	stage.begin_approach("capital")
 	ok = _assert(stage.phase == "approach", "capital approach starts") and ok
