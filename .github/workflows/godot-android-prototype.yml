@@ -69,7 +69,13 @@ jobs:
           echo "GODOT_ANDROID_KEYSTORE_DEBUG_USER=androiddebugkey" >> "$GITHUB_ENV"
           echo "GODOT_ANDROID_KEYSTORE_DEBUG_PASSWORD=android" >> "$GITHUB_ENV"
       - name: Configure Godot Android SDK paths
-        run: godot-runner --headless --editor --path native-prototype --script res://tools/configure_android.gd
+        shell: bash
+        run: |
+          set -euo pipefail
+          settings="$HOME/.config/godot/editor_settings-4.7.tres"
+          mkdir -p "$(dirname "$settings")"
+          printf '[gd_resource type="EditorSettings" format=3]\n\n[resource]\nexport/android/android_sdk_path = "%s"\nexport/android/java_sdk_path = "%s"\n' "$ANDROID_HOME" "$JAVA_HOME" > "$settings"
+          grep 'export/android' "$settings"
       - name: Export arm64 Android debug APK
         shell: bash
         run: |
