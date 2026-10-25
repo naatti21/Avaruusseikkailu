@@ -26,3 +26,8 @@ Määrittely ja hyväksymisportti: docs/DOCKING-PROCEDURES-v0.1.md.
 
 ### Julkaisuportti
 Vain erillinen testikehityshaara. GitHubin vanha Pages-versio ja main pidetään ennallaan; ei mergeä tai myyntijulkaisua ilman käyttäjän GO:ta.
+
+### Erillinen Hero Station v0.2 -vertailu
+
+6 km siirtokunta ja noin 30 m kuriiri ovat erillisessä benchmark-skenessä;
+tämä Docking 0.3 -oletusprojekti säilyy ennallaan. [V0.2-raportti ja testirajat](../docs/HERO-STATION-v0.2.md).

@@ -1,0 +1,6 @@
+native-prototype/.godot/
+native-prototype/assets/
+native-prototype/build/
+**/__pycache__/
+
+**/*.gd.uid

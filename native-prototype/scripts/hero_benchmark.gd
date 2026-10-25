@@ -1,11 +1,15 @@
 extends Node3D
 ## Renderer comparison: fixed 1 Godot unit == 1 metre. No scaling tricks.
-const STATION_METRES := 1800.0
+const STATION_METRES := 6000.0
 const COURIER_METRES := 30.0
 const CLIP_SECONDS := 5.0
 var camera: Camera3D
 var station: Node3D
 var courier: Node3D
+var distant_station: Node3D
+var windows: MultiMeshInstance3D
+var traffic: Array[Node3D] = []
+var sunlight: DirectionalLight3D
 var overlay: Label
 var caption_label: Label
 var next_button: Button
@@ -31,37 +35,78 @@ func _build_scene() -> void:
 	env.ambient_light_energy = .62
 	env_node.environment = env
 	add_child(env_node)
-	var sunlight := DirectionalLight3D.new()
+	sunlight = DirectionalLight3D.new()
 	sunlight.rotation_degrees = Vector3(-44,32,15)
 	sunlight.light_color = Color(.85,.91,1)
 	sunlight.light_energy = 2.0
-	sunlight.shadow_enabled = false
+	sunlight.shadow_enabled = true
+	sunlight.directional_shadow_max_distance = 320
+	sunlight.directional_shadow_mode = DirectionalLight3D.SHADOW_PARALLEL_2_SPLITS
 	add_child(sunlight)
+	var berth_fill := OmniLight3D.new()
+	berth_fill.position = Vector3(0,12,705)
+	berth_fill.light_color = Color(.55,.7,1)
+	berth_fill.light_energy = 3.0
+	berth_fill.omni_range = 210
+	berth_fill.shadow_enabled = false
+	add_child(berth_fill)
 	var station_resource := load("res://assets/hero_station.glb") as PackedScene
 	var ship_resource := load("res://assets/courier_30m.glb") as PackedScene
 	assert(station_resource != null, "Blender station GLB missing")
 	assert(ship_resource != null, "Blender courier GLB missing")
 	station = station_resource.instantiate() as Node3D
 	courier = ship_resource.instantiate() as Node3D
-	station.name = "Station1800m"
+	station.name = "Station6000m"
 	courier.name = "Courier30m"
 	add_child(station)
 	add_child(courier)
+	distant_station = (load("res://assets/hero_station_far.glb") as PackedScene).instantiate()
+	add_child(distant_station)
+	var manifest = JSON.parse_string(FileAccess.get_file_as_string("res://assets/hero_manifest.json"))
+	var module = (load("res://assets/window_module.glb") as PackedScene).instantiate()
+	add_child(module)
+	var window_mesh := _first_mesh(module)
+	assert(window_mesh != null)
+	var instances := MultiMesh.new()
+	instances.transform_format = MultiMesh.TRANSFORM_3D
+	instances.mesh = window_mesh.mesh
+	instances.instance_count = manifest.windows.size()
+	for i in range(instances.instance_count):
+		var p = manifest.windows[i]
+		instances.set_instance_transform(i,Transform3D(Basis.IDENTITY,Vector3(p[0],p[1],p[2])) * window_mesh.global_transform)
+	windows = MultiMeshInstance3D.new()
+	windows.multimesh = instances
+	add_child(windows)
+	module.queue_free()
+	for i in range(6):
+		var tug = ship_resource.instantiate() as Node3D
+		tug.scale = Vector3.ONE * 0.4 # Explicit 12 m background service-craft variant.
+		add_child(tug)
+		traffic.append(tug)
 	station.scale = Vector3.ONE
 	courier.scale = Vector3.ONE
 	camera = Camera3D.new()
 	camera.projection = Camera3D.PROJECTION_PERSPECTIVE
 	camera.fov = 63
 	camera.near = .3
-	camera.far = 6500
+	camera.far = 20000
 	add_child(camera)
 	camera.current = true
 	_build_stars()
 
+func _first_mesh(node: Node) -> MeshInstance3D:
+	if node is MeshInstance3D:
+		return node as MeshInstance3D
+	for child in node.get_children():
+		var found := _first_mesh(child)
+		if found != null:
+			return found
+	return null
+
 func _build_stars() -> void:
 	var star := SphereMesh.new()
-	star.radius = 2.4
-	star.height = 4.8
+	star.radius = 6.0
+	star.height = 12.0
 	star.radial_segments = 6
 	star.rings = 4
 	var m := StandardMaterial3D.new()
@@ -76,7 +121,7 @@ func _build_stars() -> void:
 	rng.seed = 31177
 	for i in range(multi.instance_count):
 		var point := Vector3(rng.randf_range(-1,1),rng.randf_range(-1,1),
-			rng.randf_range(-1,1)).normalized() * rng.randf_range(4200,6000)
+			rng.randf_range(-1,1)).normalized() * rng.randf_range(15000,18000)
 		multi.set_instance_transform(i,Transform3D(Basis.IDENTITY,point))
 	var inst := MultiMeshInstance3D.new()
 	inst.multimesh = multi
@@ -125,11 +170,11 @@ func set_beat(next_beat: int) -> void:
 	beat = clampi(next_beat,0,2)
 	elapsed = 0.0
 	if beat == 0:
-		caption_label.text = "01 / PALJASTUMINEN · 1 800 m"
+		caption_label.text = "01 / PALJASTUMINEN · 6 000 m"
 		next_button.text = "LÄHESTYMINEN"
 	elif beat == 1:
 		caption_label.text = "02 / LÄHESTYMINEN · 5 sek"
-		next_button.text = "TELAKOINTIAUKKO"
+		next_button.text = "OHITA LÄHESTYMINEN"
 	else:
 		caption_label.text = "03 / TELAKOINTIAUKKO"
 		next_button.text = "ALUSTA"
@@ -140,27 +185,37 @@ func _move_camera(t: float) -> void:
 	var finish: Vector3
 	var target: Vector3
 	if beat == 0:
-		start = Vector3(90,250,3280)
+		start = Vector3(1700,1400,10500)
 		finish = start
-		target = Vector3(0,0,-75)
-		courier.position = Vector3(38,-80,2600)
-	elif beat == 1:
-		start = Vector3(145,160,2480)
-		finish = Vector3(190,90,980)
 		target = Vector3(0,0,0)
-		courier.position = Vector3(25,-70,lerpf(2080,570,t))
+		courier.position = start + (target-start).normalized()*180 + Vector3(-18,-12,0)
+	elif beat == 1:
+		start = Vector3(650,480,4200)
+		finish = Vector3(160,80,1120)
+		target = Vector3(0,0,650)
+		courier.position = Vector3(70,-10,4000).lerp(Vector3(0,-4,1000),t)
 	else:
-		start = Vector3(105,64,520)
-		finish = Vector3(72,35,366)
-		target = Vector3(0,0,280)
-		courier.position = Vector3(14,-15,lerpf(411,338,t))
+		start = Vector3(32,24,940)
+		finish = Vector3(24,18,870)
+		target = Vector3(0,-2,695)
+		courier.position = Vector3(0,-4,lerpf(820,760,t))
 	camera.position = start.lerp(finish,t)
 	camera.look_at(target)
+	if beat == 1:
+		courier.position = camera.position + (target-camera.position).normalized()*130 + Vector3(-13,-10,0)
+	# Physical transforms stay unchanged: swap authored detail, never scale the station.
+	var far_view := camera.position.length() > 5000.0
+	station.visible = not far_view
+	distant_station.visible = far_view
+	windows.visible = not far_view
+	sunlight.shadow_enabled = camera.position.length() < 1600.0
+	for i in range(traffic.size()):
+		traffic[i].position = Vector3(-1100+i*390,-90+float(i%2)*25,780+sin(total_time*.08+i)*120)
 
 func _process(delta: float) -> void:
 	elapsed = minf(CLIP_SECONDS,elapsed+maxf(delta,0.0))
 	_move_camera(elapsed/CLIP_SECONDS)
-	if delta>0 and delta<.5:
+	if delta>0:
 		history.append(delta*1000)
 		if history.size()>600:
 			history.pop_front()
@@ -177,6 +232,8 @@ func _process(delta: float) -> void:
 		worst_percentile=samples[min(samples.size()-1,int(samples.size()*.99))]
 	var avg := float(frame_count)/maxf(total_time,.001)
 	var visible := int(Performance.get_monitor(Performance.RENDER_TOTAL_OBJECTS_IN_FRAME))
-	var renderer := str(ProjectSettings.get_setting("rendering/renderer/rendering_method"))
-	overlay.text="%s | %d FPS | avg %.1f | p99 %.1f ms\nObjects %d | ship 30 m : station 1800 m | %d/3" % [
-		renderer,Engine.get_frames_per_second(),avg,worst_percentile,visible,beat+1]
+	var calls := int(Performance.get_monitor(Performance.RENDER_TOTAL_DRAW_CALLS_IN_FRAME))
+	var primitives := int(Performance.get_monitor(Performance.RENDER_TOTAL_PRIMITIVES_IN_FRAME))
+	var renderer := RenderingServer.get_current_rendering_method()
+	overlay.text="%s | %d FPS | avg %.1f | p99 %.1f ms\nObjects %d / draws %d / prims %d\nship 30 m : station 6000 m | %d/3" % [
+		renderer,Engine.get_frames_per_second(),avg,worst_percentile,visible,calls,primitives,beat+1]

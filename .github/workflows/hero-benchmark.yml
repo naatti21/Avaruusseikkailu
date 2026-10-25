@@ -7,6 +7,10 @@ on:
       - "native-prototype/scripts/hero_benchmark.gd"
       - "native-prototype/scenes/hero_benchmark.tscn"
       - "native-prototype/tools/hero_smoke.gd"
+      - "native-prototype/tools/hero_capture.gd"
+      - "native-prototype/tools/build_hero_variants.py"
+      - "native-prototype/tools/verify_hero_assets.py"
+      - "native-prototype/tools/configure_android.gd"
       - "native-prototype/tools/prepare_hero_export.py"
       - ".github/workflows/hero-benchmark.yml"
   workflow_dispatch:
@@ -23,10 +27,14 @@ jobs:
       GODOT_VERSION_DIR: "4.7.2.stable"
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24.19.0"
+      - run: npm test
       - name: Python syntax check and Blender installation
         run: |
           set -euo pipefail
-          python3 -m py_compile native-prototype/art/generate_hero.py native-prototype/tools/prepare_hero_export.py
+          python3 -m py_compile native-prototype/art/generate_hero.py native-prototype/tools/prepare_hero_export.py native-prototype/tools/build_hero_variants.py
           sudo apt-get update -qq
           sudo apt-get install -y blender python3-numpy
           blender --version | head -n 2
@@ -38,6 +46,7 @@ jobs:
             --python native-prototype/art/generate_hero.py -- --output native-prototype/assets
           test -s native-prototype/assets/hero_station.glb
           test -s native-prototype/assets/courier_30m.glb
+          python3 native-prototype/tools/verify_hero_assets.py
           sha256sum native-prototype/assets/*.glb | tee native-prototype/assets/SHA256SUMS.txt
           ls -lh native-prototype/assets/*.glb
       - name: Install Godot and debug Android export template
@@ -57,7 +66,7 @@ jobs:
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: "17"
+          java-version: "21"
       - uses: android-actions/setup-android@v3
         with:
           packages: platform-tools
@@ -66,7 +75,7 @@ jobs:
         run: |
           set -euo pipefail
           yes | sdkmanager --licenses > /dev/null || true
-          sdkmanager "platform-tools" "platforms;android-35" "build-tools;35.0.1" "ndk;28.1.13356709" "cmake;3.10.2.4988404"
+          sdkmanager "platform-tools" "platforms;android-36" "build-tools;36.0.0"
           keytool -genkeypair -noprompt -alias androiddebugkey -keyalg RSA -keysize 2048 \
             -validity 1000 -keystore "$RUNNER_TEMP/debug.keystore" \
             -storepass android -keypass android -dname "CN=Android Debug,O=Android,C=US"
@@ -85,20 +94,16 @@ jobs:
       - name: Export same-content dual Android APKs
         run: |
           set -euo pipefail
-          mkdir -p native-prototype/build
-          for flavor in mobile compat; do
-            python3 native-prototype/tools/prepare_hero_export.py "$flavor"
-            godot-runner --headless --editor --path native-prototype --quit
-            godot-runner --headless --path native-prototype --script res://tools/hero_smoke.gd
-            godot-runner --headless --path native-prototype \
-              --export-debug Android "$PWD/native-prototype/build/hero-$flavor-arm64.apk"
-            test -s "native-prototype/build/hero-$flavor-arm64.apk"
-          done
-          ls -lh native-prototype/build/*.apk
+          python3 native-prototype/tools/build_hero_variants.py \
+            --godot "$(command -v godot-runner)" \
+            --output "$PWD/native-prototype/build/hero-v02" \
+            --sdk "$ANDROID_HOME" --java "$JAVA_HOME"
       - uses: actions/upload-artifact@v4
         with:
-          name: hero-station-mobile-vs-compat-android-apks
+          name: hero-station-v02-mobile-vs-compat-android-apks
           path: |
-            native-prototype/build/hero-*.apk
+            native-prototype/build/hero-v02/hero-v02-*.apk
+            native-prototype/build/hero-v02/APK-MANIFEST.json
+            native-prototype/assets/hero_manifest.json
             native-prototype/assets/SHA256SUMS.txt
           retention-days: 7
