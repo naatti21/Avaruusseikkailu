@@ -84,8 +84,10 @@ def export_glb(file_name):
     # Merge modules sharing materials: seven batched meshes instead of hundreds
     # of draw objects. Rotate Blender Z-up construction into Godot orientation.
     export=[]
+    # Collect groups before joins remove Blender objects from the scene.
+    by_material={m:[o for o in objects if o.data.materials[0]==m] for m in materials}
     for material in materials:
-        selected=[o for o in objects if o.data.materials[0]==material]
+        selected=by_material[material]
         if not selected:
             continue
         bpy.ops.object.select_all(action="DESELECT")
