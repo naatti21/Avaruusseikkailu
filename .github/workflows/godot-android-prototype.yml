@@ -1,0 +1,83 @@
+name: Godot native 3D Android test
+
+on:
+  pull_request:
+    paths:
+      - "native-prototype/**"
+      - ".github/workflows/godot-android-prototype.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  godot-android:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      GODOT_TAG: "4.7.2-stable"
+      GODOT_VERSION_DIR: "4.7.2.stable"
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Godot 4.7.2
+        shell: bash
+        run: |
+          set -euo pipefail
+          base="https://github.com/godotengine/godot-builds/releases/download/$GODOT_TAG"
+          curl --fail --location --retry 3 "$base/Godot_v4.7.2-stable_linux.x86_64.zip" -o "$RUNNER_TEMP/godot.zip"
+          unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/godot"
+          find "$RUNNER_TEMP/godot" -type f -name 'Godot*' -exec cp {} "$RUNNER_TEMP/godot-runner" \;
+          chmod +x "$RUNNER_TEMP/godot-runner"
+          echo "$RUNNER_TEMP" >> "$GITHUB_PATH"
+          "$RUNNER_TEMP/godot-runner" --version
+      - name: Import scripts and resources
+        run: godot-runner --headless --editor --path native-prototype --quit
+      - name: Test real 3D target movement and scene
+        run: godot-runner --headless --path native-prototype --script res://tools/smoke.gd
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+      - uses: android-actions/setup-android@v3
+      - name: Install Android SDK dependencies
+        shell: bash
+        run: |
+          set -euo pipefail
+          yes | sdkmanager --licenses > /dev/null || true
+          sdkmanager "platform-tools" "platforms;android-35" "build-tools;35.0.1" "ndk;28.1.13356709" "cmake;3.10.2.4988404"
+      - name: Install Godot Android debug export template
+        shell: bash
+        run: |
+          set -euo pipefail
+          base="https://github.com/godotengine/godot-builds/releases/download/$GODOT_TAG"
+          curl --fail --location --retry 3 "$base/Godot_v4.7.2-stable_export_templates.tpz" -o "$RUNNER_TEMP/templates.tpz"
+          dest="$HOME/.local/share/godot/export_templates/$GODOT_VERSION_DIR"
+          mkdir -p "$dest"
+          unzip -q -j "$RUNNER_TEMP/templates.tpz" 'templates/android_debug.apk' 'templates/version.txt' -d "$dest"
+          ls -lh "$dest/android_debug.apk"
+      - name: Create temporary test-only debug key
+        shell: bash
+        run: |
+          set -euo pipefail
+          keytool -genkeypair -noprompt -alias androiddebugkey -keyalg RSA -keysize 2048 \
+            -validity 1000 -keystore "$RUNNER_TEMP/debug.keystore" \
+            -storepass android -keypass android \
+            -dname "CN=Android Debug,O=Android,C=US"
+          echo "GODOT_ANDROID_KEYSTORE_DEBUG_PATH=$RUNNER_TEMP/debug.keystore" >> "$GITHUB_ENV"
+          echo "GODOT_ANDROID_KEYSTORE_DEBUG_USER=androiddebugkey" >> "$GITHUB_ENV"
+          echo "GODOT_ANDROID_KEYSTORE_DEBUG_PASSWORD=android" >> "$GITHUB_ENV"
+      - name: Configure Godot Android SDK paths
+        run: godot-runner --headless --editor --path native-prototype --script res://tools/configure_android.gd
+      - name: Export arm64 Android debug APK
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p native-prototype/build
+          godot-runner --headless --path native-prototype --export-debug Android "$PWD/native-prototype/build/avaruusseikkailu-3d-poc-arm64.apk"
+          test -s native-prototype/build/avaruusseikkailu-3d-poc-arm64.apk
+          ls -lh native-prototype/build/*.apk
+      - uses: actions/upload-artifact@v4
+        with:
+          name: avaruusseikkailu-3d-poc-android-debug
+          path: native-prototype/build/*.apk
+          retention-days: 7
