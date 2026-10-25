@@ -9,7 +9,7 @@ func _run() -> void:
 		printerr("FAIL: missing GLB or hero scene")
 		quit(1)
 		return
-	var stage := benchmark.instantiate()
+	var stage = benchmark.instantiate()
 	root.add_child(stage)
 	await process_frame
 	var ok := stage.station!=null and stage.courier!=null and stage.camera!=null
