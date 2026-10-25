@@ -2,7 +2,7 @@
 config_version=5
 
 [application]
-config/name="Avaruusseikkailu – 3D navigation test"
+config/name="Avaruusseikkailu – Docking 0.3"
 run/main_scene="res://scenes/main.tscn"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 

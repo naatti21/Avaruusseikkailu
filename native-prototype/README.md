@@ -1,24 +1,28 @@
-# Avaruusseikkailu – Android 3D -navigoinnin koe
+# Avaruusseikkailu · Android 3D docking test v0.3
 
-Erillinen oikean 3D-pelimoottorin koe mobiilille; ei vanhan HTML-selainpelin päivitys. Godot 4.7.2, GDScript ja GL Compatibility -renderöinti. Yläviisto kamera, oikea 3D-alus, avaruusasema ja tutkimuspoiju.
+Tämä on erillinen **Androidilla asennettava Godot 4.7.2 -koe**, ei vanhan selainpelin korjaus eikä vielä kokonainen peli.
 
-Näpäytä avaruudessa olevaa kohdetta tai alareunan ASEMA/POIJU-painiketta. Alus lentää todellisessa 3D-tilassa valittuun paikkaan. Saavuttuasi voit telakoitua tai analysoida poijun. Ei turhaa vapaan lentelyn pakkoa.
+### Mitä testataan
+- **Todellisempi mittakaava:** noin 30 m rahtialus, noin 900 m suuraseman ulkorengas ja noin 180 m outpost.
+- **Elokuvallinen perspektiivilähestyminen:** suuri asema kasvaa näkyviin; lyhyt siirtymä, jonka voi ohittaa.
+- **Hallinnosta ja asemasta riippuva telakointi:** suur-aseman skannaus tai jäähdytys; outpostin jonotus tai kuluttava ulkotelakointi.
+- **Lastityyppi:** laillinen tai rekisteröimätön tutkimusnäyte; vaikutus suur-aseman tulliin.
+- Kokeen ajan säilyvät krediitit, jäähdyte, runko, lämpö ja peliaika.
 
-Tämä EI ole vielä Kadonnut lähetys -tehtävä, kaupankäyntipeli eikä viimeistelty grafiikkaprototyyppi. Koe mittaa kameran, kosketusosumien ja aluksen automaattisen liikkeen mielekkyyttä.
+### Asentaminen
+GitHub Actions > Godot native 3D Android test > onnistunut uusin työajo > Artifacts > ladattava ZIP ja sen sisältämä APK. Testi käyttää vain ARM64-debugallekirjoitusta ja on erillinen vanhasta navigaatiokokeilusta.
 
-## Koonti ja asennus
+### Koe näin
+1. Valitse SUURASEMA. Katso, muuttuuko mittakaava matkalla. Kokeile toisella kierroksella OHITA LÄHESTYMINEN.
+2. Suorita avoin skannaus laillisella lastilla. Valitse seuraavalla kierroksella rekisteröimätön lasti ja vertaa.
+3. Kokeile jäähdytettyä sisääntuloa ja seuraa jäähdytteen ja lämmön muutosta.
+4. Avaa OUTPOST. Valitse turvallinen odotus tai nopea ulkotelakointi ja vertaa runkokuntoa.
+5. Arvioi: onko kaksi päätöstä mielekästä, vai pitäisikö tavalliset telakoinnit automatisoida ja näyttää vain poikkeamat?
 
-Käytä GitHub Actionsin Godot native 3D Android test -työnkulun onnistuneen ajon APK-artifaktia. Android 64-bittiselle laitteelle debug-APK, joka asennetaan tietoisesti testikäyttöön. Älä käsittele sitä kauppajulkaisuna. Koontitesti ajaa ensin Godot-automaatiosavun ja vasta sitten muodostaa APK:n. Tähän ei tarvita API-avaimia eikä release-allekirjoitusta.
+### Rajat
+Ei onlinea, ei varsinaisia kauppatehtäviä, ei laajaa tähtijärjestelmää, ei fysiikkaan perustuvaa 6DoF-ohjausta, ei vielä Android-laitetesteissä hyväksyttyä käyttöliittymää. Päätösten numerot ovat testiparametreja, eivät lopullisen pelin tasapainoa. Suhdeluku säilyy paikallisessa 3D-tilassa; tähtijärjestelmien etäisyyksiä ei renderöidä suoraan.
 
-## Mobiilikokeessa arvioi
+Määrittely ja hyväksymisportti: docs/DOCKING-PROCEDURES-v0.1.md.
 
-- Onko avaruusalus, asema ja tutkimuspoiju selkeästi hahmotettavissa puhelimen pystynäytöllä?
-- Löytyykö 3D-kohteen kosketusalue ensimmäisellä yrityksellä?
-- Tuntuuko automaattilähestyminen lyhyeltä, luontevalta ja tarkoitukselliselta?
-- Onko kameran korkeus, kuvakulma tai kohteen koko huono?
-- Sulaako näkymä Androidilla ilman suurta viivettä?
-- Haluaisitko tähän lisää manuaalista ohjausta, vai riittääkö kohteen napautus?
-
-## Rajaukset
-
-Ei tehtävä-, talous-, tallennus-, planeetannimeämis- tai onlineominaisuuksia. Ei julkaistua APK:ta sovelluskaupassa. Godot-koe pysyy erillisessä kehityshaarassa, eikä PR:ää yhdistetä ilman käyttäjän erillistä julkaisuhyväksyntää.
+### Julkaisuportti
+Vain erillinen testikehityshaara. GitHubin vanha Pages-versio ja main pidetään ennallaan; ei mergeä tai myyntijulkaisua ilman käyttäjän GO:ta.
