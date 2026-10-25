@@ -39,3 +39,17 @@ Browser localStorage key avaruusseikkailu-save-v1; schema=1. Do not use this sto
 
 ## Release
 Keep main untouched until the developer's PR is reviewed and user explicitly approves. Configure GitHub Pages only when ready to release; a public repo is not by itself a live game.
+
+---
+
+## Suuntapäivitys 2026-10-25 — natiivi mobiilipeli (vain suunnittelu)
+
+Tämän APP-SPECin aiempi v0.1-sisältö kuvaa **historiallista PWA-/Canvas-demoa**. Se ei määritä uuden pelin arkkitehtuuria. Mobiilipelille on nyt sovittu ensisijaisesti **Android-julkaisu** (iOS myöhemmin mahdollinen); selain/PWA on korkeintaan lisäjakelukanava.
+
+- Pääsisältö: tehtävät, kauppa, salakuljetus, tutkiminen ja aluksen kehitys; taistelut sivuosassa.
+- Pitkät matkat automaattisesti. Paikalliselle ohjaukselle kokeillaan **yläviistoa/isometristä 3D-näkymää, toiminnallisia kosketuskohteita ja autopilottia**. Vapaa lento mahdollinen myöhemmin vain, jos se parantaa pelattavuutta.
+- Godot 4 on toistaiseksi mobiilinatiivin 3D-testin tekninen ehdokas.
+- Ensimmäinen rajattu pelattavuuskoe on dokumentoitu tiedostoon docs/MISSION-01-KADONNUT-LAHETYS.md.
+- Vanhaa Canvas/PWA-koodia ei laajenneta tuotantopeliksi. Draft PR #2:n lennonpoistokorjaus ei ratkaise uuden natiivipelin suunnittelutarvetta.
+- Online-talous, politiikka, fraktiot ja ensimmäisen planeettalöydön nimien globaali omistus vaativat myöhemmän palvelinpohjaisen ratkaisun.
+- Repo main ja Pages-demo säilytetään ennallaan, kunnes Android-slice on arvioitu ja käyttäjä antaa erillisen julkaisu-GO:n.
