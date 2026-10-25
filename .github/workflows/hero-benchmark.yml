@@ -1,0 +1,104 @@
+name: Hero station Mobile versus Compatibility APKs
+
+on:
+  pull_request:
+    paths:
+      - "native-prototype/art/**"
+      - "native-prototype/scripts/hero_benchmark.gd"
+      - "native-prototype/scenes/hero_benchmark.tscn"
+      - "native-prototype/tools/hero_smoke.gd"
+      - "native-prototype/tools/prepare_hero_export.py"
+      - ".github/workflows/hero-benchmark.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  hero-apks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    env:
+      GODOT_TAG: "4.7.2-stable"
+      GODOT_VERSION_DIR: "4.7.2.stable"
+    steps:
+      - uses: actions/checkout@v4
+      - name: Python syntax check and Blender installation
+        run: |
+          set -euo pipefail
+          python3 -m py_compile native-prototype/art/generate_hero.py native-prototype/tools/prepare_hero_export.py
+          sudo apt-get update -qq
+          sudo apt-get install -y blender python3-numpy
+          blender --version | head -n 2
+      - name: Build reproducible 3D assets (1 metre = 1 unit)
+        run: |
+          set -euo pipefail
+          mkdir -p native-prototype/assets
+          blender --background --factory-startup \
+            --python native-prototype/art/generate_hero.py -- --output native-prototype/assets
+          test -s native-prototype/assets/hero_station.glb
+          test -s native-prototype/assets/courier_30m.glb
+          sha256sum native-prototype/assets/*.glb | tee native-prototype/assets/SHA256SUMS.txt
+          ls -lh native-prototype/assets/*.glb
+      - name: Install Godot and debug Android export template
+        run: |
+          set -euo pipefail
+          base="https://github.com/godotengine/godot-builds/releases/download/$GODOT_TAG"
+          curl --fail --location --retry 3 "$base/Godot_v4.7.2-stable_linux.x86_64.zip" -o "$RUNNER_TEMP/godot.zip"
+          unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/godot"
+          find "$RUNNER_TEMP/godot" -type f -name 'Godot*' -exec cp {} "$RUNNER_TEMP/godot-runner" \;
+          chmod +x "$RUNNER_TEMP/godot-runner"
+          echo "$RUNNER_TEMP" >> "$GITHUB_PATH"
+          "$RUNNER_TEMP/godot-runner" --version
+          curl --fail --location --retry 3 "$base/Godot_v4.7.2-stable_export_templates.tpz" -o "$RUNNER_TEMP/templates.tpz"
+          dest="$HOME/.local/share/godot/export_templates/$GODOT_VERSION_DIR"
+          mkdir -p "$dest"
+          unzip -q -j "$RUNNER_TEMP/templates.tpz" 'templates/android_debug.apk' 'templates/version.txt' -d "$dest"
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+      - uses: android-actions/setup-android@v3
+        with:
+          packages: platform-tools
+      - name: Configure Android SDK and temporary debug-only signing
+        shell: bash
+        run: |
+          set -euo pipefail
+          yes | sdkmanager --licenses > /dev/null || true
+          sdkmanager "platform-tools" "platforms;android-35" "build-tools;35.0.1" "ndk;28.1.13356709" "cmake;3.10.2.4988404"
+          keytool -genkeypair -noprompt -alias androiddebugkey -keyalg RSA -keysize 2048 \
+            -validity 1000 -keystore "$RUNNER_TEMP/debug.keystore" \
+            -storepass android -keypass android -dname "CN=Android Debug,O=Android,C=US"
+          echo "GODOT_ANDROID_KEYSTORE_DEBUG_PATH=$RUNNER_TEMP/debug.keystore" >> "$GITHUB_ENV"
+          echo "GODOT_ANDROID_KEYSTORE_DEBUG_USER=androiddebugkey" >> "$GITHUB_ENV"
+          echo "GODOT_ANDROID_KEYSTORE_DEBUG_PASSWORD=android" >> "$GITHUB_ENV"
+          settings="$HOME/.config/godot/editor_settings-4.7.tres"
+          mkdir -p "$(dirname "$settings")"
+          printf '[gd_resource type="EditorSettings" format=3]\n\n[resource]\nexport/android/android_sdk_path = "%s"\nexport/android/java_sdk_path = "%s"\n' "$ANDROID_HOME" "$JAVA_HOME" > "$settings"
+      - name: Import GLB and run scene and legacy rule smoke
+        run: |
+          set -euo pipefail
+          godot-runner --headless --editor --path native-prototype --quit
+          godot-runner --headless --path native-prototype --script res://tools/hero_smoke.gd
+          godot-runner --headless --path native-prototype --script res://tools/smoke.gd
+      - name: Export same-content dual Android APKs
+        run: |
+          set -euo pipefail
+          mkdir -p native-prototype/build
+          for flavor in mobile compat; do
+            python3 native-prototype/tools/prepare_hero_export.py "$flavor"
+            godot-runner --headless --editor --path native-prototype --quit
+            godot-runner --headless --path native-prototype --script res://tools/hero_smoke.gd
+            godot-runner --headless --path native-prototype \
+              --export-debug Android "$PWD/native-prototype/build/hero-$flavor-arm64.apk"
+            test -s "native-prototype/build/hero-$flavor-arm64.apk"
+          done
+          ls -lh native-prototype/build/*.apk
+      - uses: actions/upload-artifact@v4
+        with:
+          name: hero-station-mobile-vs-compat-android-apks
+          path: |
+            native-prototype/build/hero-*.apk
+            native-prototype/assets/SHA256SUMS.txt
+          retention-days: 7
