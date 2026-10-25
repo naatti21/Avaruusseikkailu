@@ -1,0 +1,199 @@
+{
+  "base_sha": "f1245a378412dac9a7201b19ad85ab0a13762d7d",
+  "godot": "4.7.2.stable.official.ed1daf0bf",
+  "blender": "4.3.2",
+  "java": "21.0.12.1",
+  "sdk_build_tools": "36.0.0",
+  "asset_provenance": "Repository procedural geometry/textures; Blender bundled Bfont for lettering; original SVG icon. No downloaded art.",
+  "asset_geometry": {
+    "hero_station_far.glb": {
+      "bounds_min": [
+        -3000.0,
+        -645.0,
+        -426.0
+      ],
+      "bounds_max": [
+        3000.0,
+        585.0,
+        725.0
+      ],
+      "triangles": 2808,
+      "modules": 142
+    },
+    "hero_station.glb": {
+      "bounds_min": [
+        -3000.0,
+        -645.0,
+        -426.0
+      ],
+      "bounds_max": [
+        3000.0,
+        585.0,
+        726.0
+      ],
+      "triangles": 29784,
+      "modules": 588
+    },
+    "courier_30m.glb": {
+      "bounds_min": [
+        -5.900000095367432,
+        -2.700000047683716,
+        -15.0
+      ],
+      "bounds_max": [
+        5.900000095367432,
+        2.9897472858428955,
+        15.119999885559082
+      ],
+      "triangles": 5956,
+      "modules": 115
+    },
+    "window_module.glb": {
+      "bounds_min": [
+        -6.0,
+        -2.0,
+        -0.30000001192092896
+      ],
+      "bounds_max": [
+        6.0,
+        2.0,
+        0.30000001192092896
+      ],
+      "triangles": 12,
+      "modules": 1
+    }
+  },
+  "window_instances": 456,
+  "dock": {
+    "clear_width": 76,
+    "clear_height": 48,
+    "front_z": 720,
+    "rear_z": 520,
+    "depth": 200
+  },
+  "source_assets": {
+    "colony_albedo.png": {
+      "bytes": 370229,
+      "sha256": "402a133865c39c841602f169cf96b409ef3486aa7b7c297e423d5cefaa72e7f1"
+    },
+    "colony_normal.png": {
+      "bytes": 6440,
+      "sha256": "0fd1a71154150e8ae5242a3b2a506556c62ac20b699d40d3fcf589de8b89be9b"
+    },
+    "colony_rough_metal.png": {
+      "bytes": 269168,
+      "sha256": "4c868fe2f7820b5d301be36b20af4509871c1f067258949ab38accab45a61727"
+    },
+    "courier_30m.glb": {
+      "bytes": 1055888,
+      "sha256": "79601e5bbbe0bdd957e5a76f2e1cfc59c040d7090cc01e8e89ba280bd3307cad"
+    },
+    "courier_30m_colony_albedo.png": {
+      "bytes": 370229,
+      "sha256": "402a133865c39c841602f169cf96b409ef3486aa7b7c297e423d5cefaa72e7f1"
+    },
+    "courier_30m_colony_normal.png": {
+      "bytes": 6440,
+      "sha256": "0fd1a71154150e8ae5242a3b2a506556c62ac20b699d40d3fcf589de8b89be9b"
+    },
+    "courier_30m_colony_rough_metal.png": {
+      "bytes": 269168,
+      "sha256": "4c868fe2f7820b5d301be36b20af4509871c1f067258949ab38accab45a61727"
+    },
+    "hero_station.glb": {
+      "bytes": 2622976,
+      "sha256": "0a7c694e0b537c0f06b8ddcdc57a25c0754b6b72dadc05a973d7dcf9cb213afe"
+    },
+    "hero_station_colony_albedo.png": {
+      "bytes": 370229,
+      "sha256": "402a133865c39c841602f169cf96b409ef3486aa7b7c297e423d5cefaa72e7f1"
+    },
+    "hero_station_colony_normal.png": {
+      "bytes": 6440,
+      "sha256": "0fd1a71154150e8ae5242a3b2a506556c62ac20b699d40d3fcf589de8b89be9b"
+    },
+    "hero_station_colony_rough_metal.png": {
+      "bytes": 269168,
+      "sha256": "4c868fe2f7820b5d301be36b20af4509871c1f067258949ab38accab45a61727"
+    },
+    "hero_station_far.glb": {
+      "bytes": 858672,
+      "sha256": "d040b1256e55a81b842d14f713d5e7473e0a3ebf99eaf95814c52cbade4ed259"
+    },
+    "hero_station_far_colony_albedo.png": {
+      "bytes": 370229,
+      "sha256": "402a133865c39c841602f169cf96b409ef3486aa7b7c297e423d5cefaa72e7f1"
+    },
+    "hero_station_far_colony_normal.png": {
+      "bytes": 6440,
+      "sha256": "0fd1a71154150e8ae5242a3b2a506556c62ac20b699d40d3fcf589de8b89be9b"
+    },
+    "hero_station_far_colony_rough_metal.png": {
+      "bytes": 269168,
+      "sha256": "4c868fe2f7820b5d301be36b20af4509871c1f067258949ab38accab45a61727"
+    },
+    "window_module.glb": {
+      "bytes": 2276,
+      "sha256": "595ee8f9bc2daa20ec19835f539600e820364261be131331f1d1387f0f4abfb4"
+    }
+  },
+  "apks": [
+    {
+      "file": "hero-v02-mobile-arm64.apk",
+      "bytes": 30983716,
+      "sha256": "9ae091eb1864baae7ce3e262bc4cc6c8718e89379581c070b9ddd76a6157fcf2",
+      "renderer": "mobile",
+      "architecture": "arm64-v8a",
+      "godot": "4.7.2.stable.official.ed1daf0bf"
+    },
+    {
+      "file": "hero-v02-compat-arm64.apk",
+      "bytes": 30983716,
+      "sha256": "422127279180a1627e5df3d93c4864d0311b7df985101991056ae12a209143ca",
+      "renderer": "compat",
+      "architecture": "arm64-v8a",
+      "godot": "4.7.2.stable.official.ed1daf0bf"
+    }
+  ],
+  "desktop_rendering": {
+    "actual_backend": "Compatibility / Mesa llvmpipe OpenGL 4.5",
+    "mobile_attempt": "Vulkan initialization failed; fallback to Compatibility. NOT verified Mobile rendering.",
+    "captures": [
+      {
+        "stage": "reveal",
+        "objects": 203,
+        "draw_calls": 91,
+        "primitives": 32440
+      },
+      {
+        "stage": "approach",
+        "objects": 170,
+        "draw_calls": 55,
+        "primitives": 51450
+      },
+      {
+        "stage": "docking",
+        "objects": 153,
+        "draw_calls": 51,
+        "primitives": 97188
+      }
+    ]
+  },
+  "android_device_performance": "NOT RUN / NOT MEASURED",
+  "github_ci": "NOT OBSERVED",
+  "tests": {
+    "node": {
+      "pass": 9,
+      "fail": 0,
+      "skip": 0
+    },
+    "static": "PASS",
+    "glb_contracts": "PASS",
+    "godot_imported_geometry_camera_skip_stall_retention": "PASS",
+    "legacy_godot_rules": "PASS",
+    "dual_export_signature_arm64": "PASS"
+  },
+  "warnings": [
+    "Optional adb device-discovery subprocess cannot create sandbox home .android; APK export and signature verification succeeded. No device session claimed."
+  ]
+}
