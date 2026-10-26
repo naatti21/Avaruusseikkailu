@@ -1,0 +1,41 @@
+name: Production art intake QA
+
+on:
+  pull_request:
+    paths:
+      - "native-prototype/production/**"
+      - "native-prototype/scripts/production_art_preview.gd"
+      - "native-prototype/scenes/production_art_preview.tscn"
+      - "native-prototype/tools/production_art_preview_smoke.gd"
+      - "native-prototype/tools/check_production_art.py"
+      - "tests/test_art_contract.py"
+      - ".github/workflows/production-art-intake.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  production-art-intake:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Pure-Python provenance and release-gate tests
+        run: |
+          python3 -m unittest discover -s tests -p test_art_contract.py -v
+          python3 native-prototype/tools/check_production_art.py
+      - name: Install pinned Godot 4.7.2
+        shell: bash
+        run: |
+          set -euo pipefail
+          base="https://github.com/godotengine/godot-builds/releases/download/4.7.2-stable"
+          curl --fail --location --retry 3 "$base/Godot_v4.7.2-stable_linux.x86_64.zip" -o "$RUNNER_TEMP/godot.zip"
+          unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/godot"
+          find "$RUNNER_TEMP/godot" -type f -name 'Godot*' -exec cp {} "$RUNNER_TEMP/godot-runner" \;
+          chmod +x "$RUNNER_TEMP/godot-runner"
+          echo "$RUNNER_TEMP" >> "$GITHUB_PATH"
+      - name: Import and smoke-test inspection scene (no unapproved art)
+        run: |
+          godot-runner --headless --editor --path native-prototype --quit
+          godot-runner --headless --path native-prototype --script res://tools/production_art_preview_smoke.gd

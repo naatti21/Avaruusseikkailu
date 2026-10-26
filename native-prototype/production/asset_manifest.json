@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "pilot_id": "twin-cylinder-c07-2026-10",
+  "source_design": "docs/WORLD-DESIGN-STATIONS-AND-SHIPS-v0.1.md",
+  "design_reference": "2026-10-26 ChatGPT concept panels: Twin Cylinder, C-07 courier, docking approach",
+  "release_approved": false,
+  "assets": [
+    {
+      "id": "c07_courier",
+      "type": "ship",
+      "path": "native-prototype/production/models/c07_courier.glb",
+      "dimensions_m": {
+        "length": 30,
+        "width": 12,
+        "height": 8
+      },
+      "review_status": "awaiting_artist",
+      "source_record": null
+    },
+    {
+      "id": "twin_cylinder_colony",
+      "type": "station",
+      "path": "native-prototype/production/models/twin_cylinder_colony.glb",
+      "dimensions_m": {
+        "length": 8000,
+        "width": 1800,
+        "height": 1800
+      },
+      "review_status": "awaiting_artist",
+      "source_record": null
+    },
+    {
+      "id": "twin_cylinder_berth",
+      "type": "dock_sector",
+      "path": "native-prototype/production/models/twin_cylinder_berth.glb",
+      "dimensions_m": {
+        "length": 250,
+        "width": 140,
+        "height": 120
+      },
+      "review_status": "awaiting_artist",
+      "source_record": null
+    }
+  ]
+}
