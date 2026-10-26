@@ -11,7 +11,7 @@ func _run() -> void:
 	var stage = scene.instantiate()
 	root.add_child(stage)
 	await process_frame
-	var ok := stage.camera != null and stage.camera.current
+	var ok: bool = stage.camera != null and stage.camera.current
 	for index in [0, 1, 2]:
 		stage.select_slot(index)
 		ok = ok and stage.slot == index
