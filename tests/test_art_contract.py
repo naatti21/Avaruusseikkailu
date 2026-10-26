@@ -17,7 +17,11 @@ class ArtIntakeTests(unittest.TestCase):
     def test_real_manifest_remains_not_approved(self):
         result = art.validate(ORIGINAL)
         self.assertFalse(result["release_approved"])
-        self.assertEqual({x["review_status"] for x in result["assets"]}, {"awaiting_artist"})
+        self.assertEqual({x["id"]: x["review_status"] for x in result["assets"]}, {"c07_courier": "candidate", "twin_cylinder_colony": "awaiting_artist", "twin_cylinder_berth": "awaiting_artist"})
+
+    def test_c07_required_and_checksum_verified(self):
+        result = art.validate(ORIGINAL, require_asset="c07_courier")
+        self.assertEqual(result["assets"][0]["review_status"], "candidate")
 
     def test_strict_fails_until_real_models_exist(self):
         with self.assertRaises(ValueError):

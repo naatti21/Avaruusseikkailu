@@ -1,0 +1,16 @@
+{
+  "blender": "4.3.2",
+  "source_objects": 547,
+  "runtime_meshes": 13,
+  "triangles": 84744,
+  "dimensions_blender_xyz_m": [
+    12.03600025177002,
+    29.859999656677246,
+    7.960000038146973
+  ],
+  "texture_size": 1024,
+  "texture_maps": 4,
+  "glb_bytes": 9127004,
+  "glb_sha256": "26f52ea8d5c599fbbf990ee81d8d0490b2adc3ac4886d2b077a989821f082c14",
+  "blend_sha256": "bd390a68d404063aa8cd25ca5a160d8ebf0d110613e4bcd6078203dbc1726ded"
+}
