@@ -1,0 +1,146 @@
+{
+  "base_commit": "764452a583c9c61a38ef8b229925247ad61aa2e6",
+  "selected_option": null,
+  "release_approved": false,
+  "model_hashes": {
+    "baseline": "0e6eea9851d08c8764746b5b7dafc9c9a0126f1d0726a224ff8eff374122c3c0",
+    "A": "4bbb1107719914a8704fd987a9620844cc2c9110399ce92ba8de9a336154768c",
+    "B": "965029e5c89d8e11fa620b8d5d887c6e9f1696262d8a405824613f6700fa8e4d"
+  },
+  "checks": [
+    {
+      "check": "node",
+      "exit_code": 0
+    },
+    {
+      "check": "smoke-baseline-studio",
+      "exit_code": 0
+    },
+    {
+      "check": "smoke-baseline-game",
+      "exit_code": 0
+    },
+    {
+      "check": "production_art_preview_smoke",
+      "exit_code": 0
+    },
+    {
+      "check": "c07_review",
+      "exit_code": 0
+    },
+    {
+      "check": "smoke",
+      "exit_code": 0
+    },
+    {
+      "check": "hero_smoke",
+      "exit_code": 0
+    },
+    {
+      "check": "capture-A-studio",
+      "exit_code": 0
+    },
+    {
+      "check": "capture-A-game",
+      "exit_code": 0
+    },
+    {
+      "check": "capture-baseline-studio",
+      "exit_code": 0
+    },
+    {
+      "check": "capture-baseline-game",
+      "exit_code": 0
+    },
+    {
+      "check": "import",
+      "exit_code": 0
+    },
+    {
+      "check": "python-final",
+      "exit_code": 0
+    },
+    {
+      "check": "Blender-A",
+      "exit_code": 0
+    },
+    {
+      "check": "smoke-A-studio",
+      "exit_code": 0
+    },
+    {
+      "check": "smoke-A-game",
+      "exit_code": 0
+    },
+    {
+      "check": "Blender-B",
+      "exit_code": 0
+    },
+    {
+      "check": "smoke-B-studio",
+      "exit_code": 0
+    },
+    {
+      "check": "capture-B-studio",
+      "exit_code": 0
+    },
+    {
+      "check": "smoke-B-game",
+      "exit_code": 0
+    },
+    {
+      "check": "capture-B-game",
+      "exit_code": 0
+    }
+  ],
+  "python": {
+    "pass": 17,
+    "fail": 0,
+    "skip": 0
+  },
+  "node": {
+    "pass": 9,
+    "fail": 0,
+    "skip": 0
+  },
+  "captures": {
+    "count": 24,
+    "resolution": [
+      1440,
+      1000
+    ],
+    "sha256": {
+      "A/studio/front.png": "bf9f9f9e9d6c43dca7fdfa8c5d002763f4a050883c4429f3715e5883f5759483",
+      "A/studio/side.png": "623df57f762d632ea0531d1bbeefc730a83699c15bf0c944d04abd395e79511c",
+      "A/studio/top.png": "df0fec160957b1da432c6b8ece3d7dd91cd88568870e79e4aa39f26bb6d26969",
+      "A/studio/rear.png": "0ef89f27c5ffe0be61bfbe4ad05e77d9d61cd2b7356443948fd20adee76d310f",
+      "A/studio/three-quarter.png": "ed9e2a35b3f6bd12bcd78dc467a4da5706e50b7c2b47f2ed7ab4cc95e9b7acb7",
+      "A/studio/rear-quarter.png": "97631589e083df03056e3721d7f4792b591b4dd39392406d5a8c7e9e2a1bc306",
+      "A/game/three-quarter.png": "195d0e4aaa661589d029885081cb8ec395dd97defed295edf4db404174af4b8e",
+      "A/game/rear-quarter.png": "571bc10ca4a560a4ed1ff4f5da0542832a6eeae7fa0e96a5e8067537c56d5d0e",
+      "B/studio/front.png": "a829c406bae14c34085d1c7db7ec74fa89e0c27435866a785373c7eb4129065d",
+      "B/studio/side.png": "8a3ad834ea9ce45aaef781f66156077ace6b69b1312929f767dc66fa909d0a57",
+      "B/studio/top.png": "c966289b48ce65de3527a18ca2780cc4204ecf2d7ed46fda355ad41d14ef1ce0",
+      "B/studio/rear.png": "b4efec0e19931bd95b506546e5b8724f726d48d58e2c240b98ab8b6e711f6fa5",
+      "B/studio/three-quarter.png": "3d8e4510f71d0c781b34188b996cd581daf3c37512b6f24a8908d4383efadbfe",
+      "B/studio/rear-quarter.png": "860d2e1b0575295f4bbcda766e4c5f5e168e4ec9c9fa46446fe17aa56b99cb9e",
+      "B/game/three-quarter.png": "9b7c66b7fd32212a6d4cfbf179e1e8adb0656b2357fadd386ccf49c987124394",
+      "B/game/rear-quarter.png": "8b5496ad05a3bfa923346863672d4c07b377ecd89e67947aa6d53a2b33c02e34",
+      "baseline/studio/front.png": "09d82dd31daf1b9e19368e2fc8b3bcdaf5617c9bf26b525dac7d8efecaf99874",
+      "baseline/studio/side.png": "3035817a1a778ec5ed8a7114788e64de596498d0ea8a6a5db7904f4bfab6304e",
+      "baseline/studio/top.png": "bb7bd37e626253a3379520645e152aff69dcb900f689fa3d904f2bba80677a7a",
+      "baseline/studio/rear.png": "6400446e4fffde97cbfb556ae46d4470e9eefeb19b63def7e3e631a0c1820e27",
+      "baseline/studio/three-quarter.png": "8f90a200a20e086494ed15297803e18725035133bbe0257261921cff10e3bed0",
+      "baseline/studio/rear-quarter.png": "81ea96a29182807cf9f3419d5890e0d07d72b054048b21c54d6b1ffe4821d3c7",
+      "baseline/game/three-quarter.png": "1c9727dfb6c39f281032abf92062ae4fb37ec6c92dff087aae3559c28addc7d7",
+      "baseline/game/rear-quarter.png": "e635a01a94cae5d09981b24d8893e258f37a45a816019f464c8a297445f3a6c6"
+    }
+  },
+  "tools": {
+    "blender": "4.3.2",
+    "godot": "4.7.2.stable.official.ed1daf0bf"
+  },
+  "remote_ci": "NOT VERIFIED",
+  "android": "NOT RUN",
+  "visual_approval": false
+}
