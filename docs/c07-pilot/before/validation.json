@@ -1,0 +1,93 @@
+{
+  "base_sha": "6f8f95ce47527ffca76d1f911f3d4c880feef2e5",
+  "glb_sha256": "26f52ea8d5c599fbbf990ee81d8d0490b2adc3ac4886d2b077a989821f082c14",
+  "blend_sha256": "bd390a68d404063aa8cd25ca5a160d8ebf0d110613e4bcd6078203dbc1726ded",
+  "tools": {
+    "blender": "4.3.2",
+    "godot": "4.7.2.stable.official.ed1daf0bf"
+  },
+  "checks": [
+    {
+      "check": "python-contracts",
+      "exit_code": 0
+    },
+    {
+      "check": "node",
+      "exit_code": 0
+    },
+    {
+      "check": "C07-Godot",
+      "exit_code": 0
+    },
+    {
+      "check": "PR11-preview",
+      "exit_code": 0
+    },
+    {
+      "check": "legacy-docking",
+      "exit_code": 0
+    },
+    {
+      "check": "legacy-hero",
+      "exit_code": 0
+    },
+    {
+      "check": "Blender-source",
+      "exit_code": 0
+    },
+    {
+      "check": "required-C07",
+      "exit_code": 0
+    }
+  ],
+  "python": {
+    "pass": 11,
+    "fail": 0,
+    "skip": 0
+  },
+  "node": {
+    "pass": 9,
+    "fail": 0,
+    "skip": 0
+  },
+  "capture": {
+    "result": "PASS",
+    "evidence": "Six saved viewport images; six resolution assertions; completed capture log without FAIL or ERROR",
+    "images": {
+      "front": {
+        "sha256": "06927e9366acf57c668a9fce8cd27cc10fa350b74645986785d8ec6cb22977db",
+        "width": 1440,
+        "height": 1000
+      },
+      "side": {
+        "sha256": "17ba61e1041350a3cfce0f0e9250bea04c7f165b6e62d49d3d90576d0a14b1c8",
+        "width": 1440,
+        "height": 1000
+      },
+      "top": {
+        "sha256": "4764bf734ac46219408c1fdaeba029fc06b2a48062f0af608d54ccbcdc22e7c6",
+        "width": 1440,
+        "height": 1000
+      },
+      "rear": {
+        "sha256": "42d38e015206bfbdae624e4c7d59ca1502bb60cfdfff4d969b032b359e9d0cbe",
+        "width": 1440,
+        "height": 1000
+      },
+      "three-quarter": {
+        "sha256": "f390f8f469c2a8d2f481b77f265a90b7eda2555d2d2f40ca21c81daa484477c0",
+        "width": 1440,
+        "height": 1000
+      },
+      "rear-quarter": {
+        "sha256": "5617cb55d7a7c6a0056f953deef71e597a858db7256e2d7d50fcc8caff9340a2",
+        "width": 1440,
+        "height": 1000
+      }
+    }
+  },
+  "remote_ci": "NOT VERIFIED",
+  "android": "NOT RUN",
+  "visual_approval": false,
+  "release_approved": false
+}

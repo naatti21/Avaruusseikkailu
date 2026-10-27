@@ -38,7 +38,9 @@ def read_glb(path: Path):
     return gltf
 
 
-def validate(manifest_path=MANIFEST, *, require_models=False):
+def validate(manifest_path=MANIFEST, *, require_models=False, require_asset=None):
+    if require_asset is not None and require_asset not in REQUIRED:
+        raise ValueError("Unknown required asset")
     manifest_path = Path(manifest_path)
     project = manifest_path.resolve().parents[2] if manifest_path.name == "asset_manifest.json" else PROJECT
     info = json.loads(manifest_path.read_text(encoding="utf-8"))
@@ -64,7 +66,7 @@ def validate(manifest_path=MANIFEST, *, require_models=False):
             raise ValueError(f"{ident}: invalid nominal metre dimensions")
         resource = project / raw
         exists = resource.is_file()
-        if require_models and not exists:
+        if (require_models or ident == require_asset) and not exists:
             raise ValueError(f"{ident}: missing production GLB")
         if not exists:
             if status != "awaiting_artist" or asset.get("source_record") is not None:
@@ -98,9 +100,10 @@ def validate(manifest_path=MANIFEST, *, require_models=False):
 def main():
     p = argparse.ArgumentParser()
     p.add_argument("--require-models", action="store_true")
+    p.add_argument("--require-asset", choices=sorted(REQUIRED))
     args = p.parse_args()
     try:
-        validate(require_models=args.require_models)
+        validate(require_models=args.require_models, require_asset=args.require_asset)
     except (ValueError, KeyError, OSError, json.JSONDecodeError) as error:
         print(f"FAIL: {error}", file=sys.stderr)
         return 1

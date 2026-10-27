@@ -9,6 +9,9 @@ on:
       - "native-prototype/tools/production_art_preview_smoke.gd"
       - "native-prototype/tools/check_production_art.py"
       - "tests/test_art_contract.py"
+      - "tests/test_c07_model.py"
+      - "native-prototype/art/c07/**"
+      - "native-prototype/tools/c07_review.gd"
       - ".github/workflows/production-art-intake.yml"
   workflow_dispatch:
 
@@ -23,19 +26,39 @@ jobs:
       - uses: actions/checkout@v4
       - name: Pure-Python provenance and release-gate tests
         run: |
-          python3 -m unittest discover -s tests -p test_art_contract.py -v
-          python3 native-prototype/tools/check_production_art.py
+          python3 -m unittest discover -s tests -p 'test_*.py' -v
+          python3 native-prototype/tools/check_production_art.py --require-asset c07_courier
       - name: Install pinned Godot 4.7.2
         shell: bash
         run: |
           set -euo pipefail
           base="https://github.com/godotengine/godot-builds/releases/download/4.7.2-stable"
           curl --fail --location --retry 3 "$base/Godot_v4.7.2-stable_linux.x86_64.zip" -o "$RUNNER_TEMP/godot.zip"
+          curl --fail --location --retry 3 "$base/SHA512-SUMS.txt" -o "$RUNNER_TEMP/SHA512-SUMS.txt"
+          expected=$(awk '$2 == "Godot_v4.7.2-stable_linux.x86_64.zip" { print $1 }' "$RUNNER_TEMP/SHA512-SUMS.txt")
+          test "${#expected}" = 128
+          echo "$expected  $RUNNER_TEMP/godot.zip" | sha512sum --check --strict
           unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/godot"
           find "$RUNNER_TEMP/godot" -type f -name 'Godot*' -exec cp {} "$RUNNER_TEMP/godot-runner" \;
           chmod +x "$RUNNER_TEMP/godot-runner"
           echo "$RUNNER_TEMP" >> "$GITHUB_PATH"
-      - name: Import and smoke-test inspection scene (no unapproved art)
+      - name: Import and smoke-test isolated candidate inspection scene
         run: |
           godot-runner --headless --editor --path native-prototype --quit
           godot-runner --headless --path native-prototype --script res://tools/production_art_preview_smoke.gd
+          godot-runner --headless --path native-prototype --script res://tools/c07_review.gd
+      - name: Capture actual Godot Compatibility model views
+        env:
+          C07_CAPTURE_DIR: ${{ runner.temp }}/c07-review
+        run: |
+          xvfb-run -a -s "-screen 0 1600x1200x24" godot-runner --audio-driver Dummy --path native-prototype --rendering-method gl_compatibility --script res://tools/c07_review.gd -- --capture
+          C07_CAPTURE_DIR="$C07_CAPTURE_DIR/game-lighting" xvfb-run -a -s "-screen 0 1600x1200x24" godot-runner --audio-driver Dummy --path native-prototype --rendering-method gl_compatibility --script res://tools/c07_review.gd -- --capture --game-lighting
+      - uses: actions/upload-artifact@v4
+        with:
+          name: c07-model-review
+          if-no-files-found: error
+          path: |
+            ${{ runner.temp }}/c07-review/
+            native-prototype/production/models/c07_courier.glb
+            native-prototype/art/c07/source/c07_courier.blend
+            native-prototype/production/asset_manifest.json

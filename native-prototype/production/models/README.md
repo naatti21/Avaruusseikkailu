@@ -10,3 +10,7 @@ This directory will receive:
 When adding a candidate, update `../asset_manifest.json` with provenance, SHA256, and `review_status=candidate`. Run `python3 native-prototype/tools/check_production_art.py --require-models` only when all three are actually present; otherwise run without that flag. No one should claim visual quality from this check alone.
 
 The actual 2D concept panels from the chat are visual source references. They are **not GLB meshes**; the production artwork must be independently modeled and inspected before Android integration.
+
+## Issue #12 C-07 candidate
+
+`c07_courier.glb` now contains the original, unapproved C-07 art candidate. Its editable source and rebuild instructions are in `../../art/c07/`. Validate this bounded stage with `check_production_art.py --require-asset c07_courier`. Colony/berth remain absent; `--require-models` must still reject the incomplete full pilot. See `docs/c07-pilot/README.md` at the repository root for Godot views and actual results.
