@@ -1,0 +1,33 @@
+{
+	"android_tested": false,
+	"cockpit_center_x_m": 0.0,
+	"dimensions_xyz_m": [
+		11.5999994277954,
+		7.40999984741211,
+		29.5499992370605
+	],
+	"engine_stagger_m": 0.0,
+	"lighting": "studio",
+	"materials": 1,
+	"model_sha256": "b555e0deffb77fa09d6aacea992b56cc2c5dd0945bb56d40c87c3690653f7458",
+	"option": "A4",
+	"owner_visual_approval": false,
+	"renderer": "gl_compatibility",
+	"selected_direction": "A",
+	"surfaces": 9,
+	"triangles": 48952,
+	"views": {
+		"cargo-locks": {
+			"draw_calls": 16.0,
+			"primitives": 69768.0
+		},
+		"cockpit": {
+			"draw_calls": 18.0,
+			"primitives": 86344.0
+		},
+		"propulsion": {
+			"draw_calls": 17.0,
+			"primitives": 80792.0
+		}
+	}
+}
