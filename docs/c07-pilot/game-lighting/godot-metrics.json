@@ -1,0 +1,29 @@
+{
+	"android_tested": false,
+	"dimensions_xyz_m": [
+		12.0429992675781,
+		7.96000003814697,
+		29.8600006103516
+	],
+	"glb_sha256": "0e6eea9851d08c8764746b5b7dafc9c9a0126f1d0726a224ff8eff374122c3c0",
+	"lighting": "main.gd::_build_lights",
+	"materials": 1,
+	"renderer": "gl_compatibility",
+	"surfaces": 13,
+	"triangles": 87572,
+	"viewport_size": [
+		1440,
+		1000
+	],
+	"views": {
+		"rear-quarter": {
+			"draw_calls": 13.0,
+			"rendered_primitives": 87572.0
+		},
+		"three-quarter": {
+			"draw_calls": 13.0,
+			"rendered_primitives": 87572.0
+		}
+	},
+	"visual_approved": false
+}

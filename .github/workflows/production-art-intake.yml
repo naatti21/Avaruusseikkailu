@@ -52,6 +52,7 @@ jobs:
           C07_CAPTURE_DIR: ${{ runner.temp }}/c07-review
         run: |
           xvfb-run -a -s "-screen 0 1600x1200x24" godot-runner --audio-driver Dummy --path native-prototype --rendering-method gl_compatibility --script res://tools/c07_review.gd -- --capture
+          C07_CAPTURE_DIR="$C07_CAPTURE_DIR/game-lighting" xvfb-run -a -s "-screen 0 1600x1200x24" godot-runner --audio-driver Dummy --path native-prototype --rendering-method gl_compatibility --script res://tools/c07_review.gd -- --capture --game-lighting
       - uses: actions/upload-artifact@v4
         with:
           name: c07-model-review

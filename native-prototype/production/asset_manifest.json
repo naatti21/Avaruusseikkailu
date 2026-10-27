@@ -19,10 +19,12 @@
         "author": "Original C-07 mesh authored for naatti21/Avaruusseikkailu with Codex and Blender; no external mesh",
         "license": "Original project contribution; no third-party model or texture license. Bundled Blender Bfont used for geometric lettering. Concept supplied by repository owner; redistribution of reference not assumed.",
         "source": "native-prototype/art/c07/source/c07_courier.blend",
-        "sha256": "26f52ea8d5c599fbbf990ee81d8d0490b2adc3ac4886d2b077a989821f082c14",
-        "source_sha256": "bd390a68d404063aa8cd25ca5a160d8ebf0d110613e4bcd6078203dbc1726ded",
+        "sha256": "0e6eea9851d08c8764746b5b7dafc9c9a0126f1d0726a224ff8eff374122c3c0",
+        "source_sha256": "68086c196a1ec918f854e9e9522fba0b0b5da806c14536785c13c69cecd33808",
         "reference_sha256": "59476fd3f5930a760390786ba344a1938d7f9907f297ba45984d109ff2c99203",
-        "reference": "User-supplied Avaruusseikkailu_Pilotti01_Konseptireferenssit.zip / 03_c07_aluksen_referenssi.jpg; not redistributed"
+        "reference": "User-supplied Avaruusseikkailu_Pilotti01_Konseptireferenssit.zip / 03_c07_aluksen_referenssi.jpg; not redistributed",
+        "revision": 2,
+        "base_source_sha256": "bd390a68d404063aa8cd25ca5a160d8ebf0d110613e4bcd6078203dbc1726ded"
       }
     },
     {

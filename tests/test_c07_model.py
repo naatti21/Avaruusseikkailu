@@ -55,6 +55,15 @@ class C07ModelTests(unittest.TestCase):
   names={x.get('name') for x in art.read_glb(GLB)['nodes']}
   for n in ['C07_cockpit','C07_engines','C07_cargo','C07_keel','C07_dorsal','C07_markings']:
    self.assertIn(n,names)
+ def test_revision_preserves_reviewed_source_lineage(self):
+  a=json.loads((ROOT/'native-prototype/production/asset_manifest.json').read_text())['assets'][0]
+  lineage=json.loads((ROOT/'native-prototype/art/c07/revision_lineage.json').read_text())
+  self.assertEqual(a['source_record']['revision'],2)
+  self.assertEqual(lineage['base_commit'],'e4c80525ac7ef5320eeecda54839b41d909b24a6')
+  self.assertEqual(lineage['base_source_sha256'],a['source_record']['base_source_sha256'])
+  self.assertIn('Continuous pressure hull',lineage['retained_objects'])
+  self.assertGreaterEqual(len(lineage['retained_objects']),450)
+  self.assertFalse(set(lineage['retained_objects']) & set(lineage['removed_objects']))
  def test_c07_gate_does_not_claim_station_or_berth(self):
   d=art.validate(require_asset='c07_courier')
   self.assertFalse(d['release_approved'])

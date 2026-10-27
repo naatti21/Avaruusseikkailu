@@ -1,16 +1,19 @@
 {
   "blender": "4.3.2",
-  "source_objects": 547,
+  "revision": 2,
+  "source_objects": 556,
+  "retained_source_objects": 479,
+  "base_source_sha256": "bd390a68d404063aa8cd25ca5a160d8ebf0d110613e4bcd6078203dbc1726ded",
   "runtime_meshes": 13,
-  "triangles": 84744,
+  "triangles": 87572,
   "dimensions_blender_xyz_m": [
-    12.03600025177002,
+    12.042998790740967,
     29.859999656677246,
     7.960000038146973
   ],
   "texture_size": 1024,
   "texture_maps": 4,
-  "glb_bytes": 9127004,
-  "glb_sha256": "26f52ea8d5c599fbbf990ee81d8d0490b2adc3ac4886d2b077a989821f082c14",
-  "blend_sha256": "bd390a68d404063aa8cd25ca5a160d8ebf0d110613e4bcd6078203dbc1726ded"
+  "glb_bytes": 9276816,
+  "glb_sha256": "0e6eea9851d08c8764746b5b7dafc9c9a0126f1d0726a224ff8eff374122c3c0",
+  "blend_sha256": "68086c196a1ec918f854e9e9522fba0b0b5da806c14536785c13c69cecd33808"
 }

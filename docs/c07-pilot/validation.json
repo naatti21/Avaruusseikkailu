@@ -1,14 +1,19 @@
 {
-  "base_sha": "6f8f95ce47527ffca76d1f911f3d4c880feef2e5",
-  "glb_sha256": "26f52ea8d5c599fbbf990ee81d8d0490b2adc3ac4886d2b077a989821f082c14",
-  "blend_sha256": "bd390a68d404063aa8cd25ca5a160d8ebf0d110613e4bcd6078203dbc1726ded",
+  "base_sha": "e4c80525ac7ef5320eeecda54839b41d909b24a6",
+  "revision": 2,
+  "glb_sha256": "0e6eea9851d08c8764746b5b7dafc9c9a0126f1d0726a224ff8eff374122c3c0",
+  "blend_sha256": "68086c196a1ec918f854e9e9522fba0b0b5da806c14536785c13c69cecd33808",
   "tools": {
     "blender": "4.3.2",
     "godot": "4.7.2.stable.official.ed1daf0bf"
   },
   "checks": [
     {
-      "check": "python-contracts",
+      "check": "import",
+      "exit_code": 0
+    },
+    {
+      "check": "python",
       "exit_code": 0
     },
     {
@@ -16,32 +21,48 @@
       "exit_code": 0
     },
     {
-      "check": "C07-Godot",
+      "check": "Blender",
       "exit_code": 0
     },
     {
-      "check": "PR11-preview",
+      "check": "C07",
       "exit_code": 0
     },
     {
-      "check": "legacy-docking",
+      "check": "C07-game",
       "exit_code": 0
     },
     {
-      "check": "legacy-hero",
+      "check": "PR11",
       "exit_code": 0
     },
     {
-      "check": "Blender-source",
+      "check": "docking",
       "exit_code": 0
     },
     {
-      "check": "required-C07",
+      "check": "hero",
+      "exit_code": 0
+    },
+    {
+      "check": "capture-studio",
+      "exit_code": 0
+    },
+    {
+      "check": "capture-game",
+      "exit_code": 0
+    },
+    {
+      "check": "before-import",
+      "exit_code": 0
+    },
+    {
+      "check": "capture-before-game",
       "exit_code": 0
     }
   ],
   "python": {
-    "pass": 11,
+    "pass": 12,
     "fail": 0,
     "skip": 0
   },
@@ -52,35 +73,87 @@
   },
   "capture": {
     "result": "PASS",
-    "evidence": "Six saved viewport images; six resolution assertions; completed capture log without FAIL or ERROR",
+    "new_studio_views": 6,
+    "new_game_light_views": 2,
+    "baseline_game_light_views": 2,
     "images": {
-      "front": {
+      "before/front.png": {
         "sha256": "06927e9366acf57c668a9fce8cd27cc10fa350b74645986785d8ec6cb22977db",
         "width": 1440,
         "height": 1000
       },
-      "side": {
-        "sha256": "17ba61e1041350a3cfce0f0e9250bea04c7f165b6e62d49d3d90576d0a14b1c8",
+      "before/game-lighting/rear-quarter.png": {
+        "sha256": "220b2815c9a9649d3422f1b51bf0d302784ae8700bff8a1a2d9965fa7e6bde1f",
         "width": 1440,
         "height": 1000
       },
-      "top": {
-        "sha256": "4764bf734ac46219408c1fdaeba029fc06b2a48062f0af608d54ccbcdc22e7c6",
+      "before/game-lighting/three-quarter.png": {
+        "sha256": "95aba44516668738b4a198492ad1309fa2d75b1295b72a679bacb3b596e6d8f7",
         "width": 1440,
         "height": 1000
       },
-      "rear": {
+      "before/rear-quarter.png": {
+        "sha256": "5617cb55d7a7c6a0056f953deef71e597a858db7256e2d7d50fcc8caff9340a2",
+        "width": 1440,
+        "height": 1000
+      },
+      "before/rear.png": {
         "sha256": "42d38e015206bfbdae624e4c7d59ca1502bb60cfdfff4d969b032b359e9d0cbe",
         "width": 1440,
         "height": 1000
       },
-      "three-quarter": {
+      "before/side.png": {
+        "sha256": "17ba61e1041350a3cfce0f0e9250bea04c7f165b6e62d49d3d90576d0a14b1c8",
+        "width": 1440,
+        "height": 1000
+      },
+      "before/three-quarter.png": {
         "sha256": "f390f8f469c2a8d2f481b77f265a90b7eda2555d2d2f40ca21c81daa484477c0",
         "width": 1440,
         "height": 1000
       },
-      "rear-quarter": {
-        "sha256": "5617cb55d7a7c6a0056f953deef71e597a858db7256e2d7d50fcc8caff9340a2",
+      "before/top.png": {
+        "sha256": "4764bf734ac46219408c1fdaeba029fc06b2a48062f0af608d54ccbcdc22e7c6",
+        "width": 1440,
+        "height": 1000
+      },
+      "front.png": {
+        "sha256": "4ed3d3126559d19599691b0729a0be50b28e813ea191fad2864b93239d9aba89",
+        "width": 1440,
+        "height": 1000
+      },
+      "game-lighting/rear-quarter.png": {
+        "sha256": "3c63c333dda2b056451d2ad3b05b461db89c3c9f5d44574306a1454f1fe244ec",
+        "width": 1440,
+        "height": 1000
+      },
+      "game-lighting/three-quarter.png": {
+        "sha256": "154150a28dce814875b749e9d4a08a7db6b9bf0dc64a08c654399a19fa8b157e",
+        "width": 1440,
+        "height": 1000
+      },
+      "rear-quarter.png": {
+        "sha256": "63fe5a1d07ed2f9854be157ac8cf434c8df59559f92f9cca27ced192e95e9b6e",
+        "width": 1440,
+        "height": 1000
+      },
+      "rear.png": {
+        "sha256": "4f69a1e291c9e008265f09458e008b4d3ac9b9c0f673b60336662e1bed0fb911",
+        "width": 1440,
+        "height": 1000
+      },
+      "side.png": {
+        "sha256": "5f3d91f1b977942e5f46a47b124a3064f92aa52d10ef69187c1cb698e9304cbf",
+        "width": 1440,
+        "height": 1000
+      },
+      "three-quarter.png": {
+        "sha256": "ae39f6f4ebac7e5f01f02039494eb0e2376897ce2f099b73f5891dce90853918",
+        "width": 1440,
+        "height": 1000
+      },
+      "top.png": {
+        "sha256": "36c8b78f12e18f1200d9d7409b23ea509afd1f2da440739379ae4217cc210578",
         "width": 1440,
         "height": 1000
       }

@@ -1,15 +1,16 @@
 {
 	"android_tested": false,
 	"dimensions_xyz_m": [
-		12.03600025177,
+		12.0429992675781,
 		7.96000003814697,
 		29.8600006103516
 	],
-	"glb_sha256": "26f52ea8d5c599fbbf990ee81d8d0490b2adc3ac4886d2b077a989821f082c14",
+	"glb_sha256": "0e6eea9851d08c8764746b5b7dafc9c9a0126f1d0726a224ff8eff374122c3c0",
+	"lighting": "studio",
 	"materials": 1,
 	"renderer": "gl_compatibility",
 	"surfaces": 13,
-	"triangles": 84744,
+	"triangles": 87572,
 	"viewport_size": [
 		1440,
 		1000
@@ -17,27 +18,27 @@
 	"views": {
 		"front": {
 			"draw_calls": 26.0,
-			"rendered_primitives": 140326.0
+			"rendered_primitives": 147542.0
 		},
 		"rear": {
 			"draw_calls": 26.0,
-			"rendered_primitives": 157424.0
+			"rendered_primitives": 153128.0
 		},
 		"rear-quarter": {
 			"draw_calls": 26.0,
-			"rendered_primitives": 116026.0
+			"rendered_primitives": 130974.0
 		},
 		"side": {
 			"draw_calls": 26.0,
-			"rendered_primitives": 110842.0
+			"rendered_primitives": 124022.0
 		},
 		"three-quarter": {
 			"draw_calls": 26.0,
-			"rendered_primitives": 117566.0
+			"rendered_primitives": 130974.0
 		},
 		"top": {
 			"draw_calls": 26.0,
-			"rendered_primitives": 102758.0
+			"rendered_primitives": 111650.0
 		}
 	},
 	"visual_approved": false

@@ -13,6 +13,7 @@ func check(condition: bool, message: String) -> void:
 
 func _run() -> void:
 	var capture := "--capture" in OS.get_cmdline_user_args()
+	var game_lighting := "--game-lighting" in OS.get_cmdline_user_args()
 	root.content_scale_mode = Window.CONTENT_SCALE_MODE_DISABLED
 	root.content_scale_aspect = Window.CONTENT_SCALE_ASPECT_IGNORE
 	root.content_scale_size = Vector2i.ZERO
@@ -89,7 +90,24 @@ func _run() -> void:
 	fill.light_color = Color(.62,.73,1)
 	fill.light_energy = .65
 	stage.add_child(fill)
-	var metrics := {"renderer":RenderingServer.get_current_rendering_method(), "dimensions_xyz_m":[size.x,size.y,size.z], "triangles":triangles, "surfaces":surfaces, "materials":materials.size(), "views":{}, "visual_approved":false, "android_tested":false, "glb_sha256":FileAccess.get_sha256("res://production/models/c07_courier.glb"), "viewport_size":[root.size.x,root.size.y]}
+	if game_lighting:
+		# Run the actual native prototype light builder off-tree: no gameplay _ready,
+		# storage, ship replacement or copied approximate lighting constants.
+		for child in stage.get_children():
+			if child is WorldEnvironment or child is Light3D:
+				stage.remove_child(child)
+				child.free()
+		var lighting_owner = load("res://scripts/main.gd").new()
+		lighting_owner._build_lights()
+		var light_count := 0
+		for child in lighting_owner.get_children():
+			lighting_owner.remove_child(child)
+			stage.add_child(child)
+			if child is Light3D: light_count += 1
+		lighting_owner.free()
+		check(light_count == 1, "actual game lighting without studio fill")
+		views = {"three-quarter":views["three-quarter"], "rear-quarter":views["rear-quarter"]}
+	var metrics := {"renderer":RenderingServer.get_current_rendering_method(), "dimensions_xyz_m":[size.x,size.y,size.z], "triangles":triangles, "surfaces":surfaces, "materials":materials.size(), "views":{}, "visual_approved":false, "android_tested":false, "lighting":"main.gd::_build_lights" if game_lighting else "studio", "glb_sha256":FileAccess.get_sha256("res://production/models/c07_courier.glb"), "viewport_size":[root.size.x,root.size.y]}
 	var output := OS.get_environment("C07_CAPTURE_DIR")
 	if capture:
 		check(not output.is_empty(), "explicit capture output directory")
