@@ -2,7 +2,7 @@
   "schema_version": 1,
   "baseline_commit": "764452a583c9c61a38ef8b229925247ad61aa2e6",
   "release_approved": false,
-  "selected_option": null,
+  "selected_option": "A",
   "options": [
     {
       "option": "A",
@@ -109,7 +109,7 @@
       "surfaces": 13,
       "materials": 7,
       "texture_maps": 0,
-      "review_status": "unselected",
+      "review_status": "selected_for_design",
       "can_integrate": false
     },
     {
@@ -217,7 +217,7 @@
       "surfaces": 13,
       "materials": 7,
       "texture_maps": 0,
-      "review_status": "unselected",
+      "review_status": "reference_only",
       "can_integrate": false
     }
   ]

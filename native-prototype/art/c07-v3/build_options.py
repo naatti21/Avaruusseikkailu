@@ -134,5 +134,12 @@ for option in ['A','B']:
  bpy.ops.export_scene.gltf(filepath=str(out),export_format='GLB',use_selection=True,export_yup=True,export_apply=True,export_texcoords=True,export_normals=True,export_materials='EXPORT',export_cameras=False,export_lights=False)
  lo,hi=bounds([v for o in runtime for v in world_points(o)])
  rec={'option':option,'base_commit':'764452a583c9c61a38ef8b229925247ad61aa2e6','base_source_sha256':BASE_SHA,'inherited_objects':inherited,'source':str(source.relative_to(ROOT)),'path':str(out.relative_to(ROOT)),'source_sha256':hashlib.sha256(source.read_bytes()).hexdigest(),'sha256':hashlib.sha256(out.read_bytes()).hexdigest(),'dimensions_blender_xyz':[b-a for a,b in zip(lo,hi)],'triangles':sum(sum(len(p.vertices)-2 for p in o.data.polygons) for o in runtime),'surfaces':len(runtime),'materials':len({o.data.materials[0].name for o in runtime}),'texture_maps':0,'review_status':'unselected','can_integrate':False}
+ # A is chosen for more design only, never as approved or integratable artwork.
+ decision_path=OUT/'selection.json'
+ decision=json.loads(decision_path.read_text()) if decision_path.is_file() else {'selected_option':None}
+ chosen=decision.get('selected_option')
+ if chosen not in (None,'A','B'):raise ValueError('Invalid design choice')
+ rec['review_status']='selected_for_design' if option==chosen else ('reference_only' if chosen else 'unselected')
+ rec['can_integrate']=False
  records.append(rec);print('STUDY',json.dumps(rec),flush=True)
-(OUT/'manifest.json').write_text(json.dumps({'schema_version':1,'baseline_commit':'764452a583c9c61a38ef8b229925247ad61aa2e6','release_approved':False,'selected_option':None,'options':records},indent=2)+'\n')
+(OUT/'manifest.json').write_text(json.dumps({'schema_version':1,'baseline_commit':'764452a583c9c61a38ef8b229925247ad61aa2e6','release_approved':False,'selected_option':chosen,'options':records},indent=2)+'\n')

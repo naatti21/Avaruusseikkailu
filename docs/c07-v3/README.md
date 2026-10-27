@@ -1,6 +1,6 @@
-# C-07 Design Review v3 — valitse A, B tai nykyinen
+# C-07 Design Review v3 — A valittu jatkokehityksen suunnaksi
 
-Kaksi erillistä muotoiluvaihtoehtoa PR #13:n katselmoinnin pohjalta. **Kumpaakaan ei ole valittu tai hyväksytty.** Nykyinen C-07, commit `764452a583c9c61a38ef8b229925247ad61aa2e6`, säilyy muuttumattomana tuotantomallipaikassaan. Uudet vaihtoehdot ovat erillisessä `design-review/c07-v3`-hakemistossa, eivät pelissä.
+Kaksi erillistä muotoiluvaihtoehtoa PR #13:n katselmoinnin pohjalta. **27.10.2026 käyttäjä valitsi A:n vain jatkosuunnittelun pohjaksi. A ei ole valmis eikä hyväksytty pelialus.** B säilyy vertailumallina ja mahdollisena myöhempänä erikoisaluksena. Nykyinen C-07, commit `764452a583c9c61a38ef8b229925247ad61aa2e6`, säilyy muuttumattomana tuotantomallipaikassaan. Uudet vaihtoehdot ovat erillisessä `design-review/c07-v3`-hakemistossa, eivät pelissä.
 
 ## Muotoiluerot
 
@@ -62,4 +62,4 @@ Kehityksen aikana lähdetesti pysähtyi tarpeettomiin perittyihin tekstuurimater
 
 Nämä ovat päämuotoilun vaihtoehtoja. Sisustusta, rahtimekaniikkaa, massakeskiötä, työntövoiman tasapainoa, törmäysgeometriaa tai Android-frame-timea ei ole varmennettu. Lopullinen teksturointi ja tekninen detaljointi alkavat vasta valinnan jälkeen. Kaikki paikalliset kuvat ovat desktop/Mesa-ohjelmistorenderöintejä; eivät Android- tai Mobile-renderöijän hyväksyntää.
 
-**Seuraava päätös kuuluu käyttäjälle: A, B vai nykyinen C-07.** `selected_option=null`, `release_approved=false` ja `can_integrate=false`. Ei mergeä, julkaisua, gameplay-integraatiota tai asemamallinnusta.
+**Käyttäjän päätös 27.10.2026: A suunnittelupohjaksi, ei julkaisu-/pelimallihyväksyntää.** `selected_option=A`, `review_status=selected_for_design`, `release_approved=false` ja `can_integrate=false`. Valintatieto on dokumentoitu tiedostossa `native-prototype/design-review/c07-v3/selection.json`, ja seuraavan kierroksen ohjeet ovat tiedostossa `docs/c07-v4/C07-A-DESIGN-BRIEF.md`. Ei mergeä, julkaisua, gameplay-integraatiota tai asemamallinnusta.

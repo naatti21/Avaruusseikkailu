@@ -1,6 +1,6 @@
 # C-07 v3 — A/B silhouette studies, not production assets
 
-Two alternative mass-distribution designs based on the owner's original C-07 concept and the editable source reviewed in PR #13. Neither alternative is selected or approved. The original production candidate remains byte-identical.
+Two alternative mass-distribution designs based on the owner's original C-07 concept and the editable source reviewed in PR #13. Option **A is selected for further design only**, not approved as finished art and not integrated. B stays as separate reference. The original production candidate remains byte-identical.
 
 - **A / compact industrial courier:** centered crew cabin, exposed longitudinal keel, two low removable side cargo modules, swept load paths and paired aft drives.
 - **B / asymmetric utility courier:** port-side crew cabin and main/secondary cargo, starboard service/drive spine, staggered main/auxiliary engines, structural crossbeams and a folded service gantry.
@@ -11,7 +11,7 @@ The same source cockpit, cropped forward pressure hull, two cassette meshes and 
 
 - `source/c07_option_a.blend` and `source/c07_option_b.blend`: editable separate sources; metre units and named components.
 - `../../design-review/c07-v3/c07_option_a.glb` and `c07_option_b.glb`: runtime geometry used by the capture script.
-- `../../design-review/c07-v3/manifest.json`: hashes, counts, source lineage, dimensions and unselected/release gates.
+- `../../design-review/c07-v3/manifest.json`: hashes, counts, source lineage, dimensions and design-only/release gates. `../../design-review/c07-v3/selection.json` is the durable owner decision source.
 - `build_options.py`: reads a hash-locked copy of the existing C-07 source; never writes that input or the production candidate. It imports only geometry-helper function definitions from the original recipe, not the scene-clearing/build code.
 - `check_source.py`: independent source reopen/lineage/material/scale checks.
 - `../../tools/c07_design_review.gd`: isolated Godot inspection using PR #11's preview infrastructure. It renders A, B or the unchanged baseline. The default main scene is untouched.

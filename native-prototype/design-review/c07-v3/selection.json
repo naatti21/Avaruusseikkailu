@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "selected_option": "A",
+  "decision_type": "design_direction_only",
+  "decision_date": "2026-10-27",
+  "basis": "User explicitly selected C-07 silhouette A to continue design; did not approve final game model.",
+  "owner_visual_approval": false,
+  "production_asset_approved": false,
+  "release_approved": false,
+  "can_integrate": false,
+  "preserved_alternative": "B retained intact as study and possible future support ship",
+  "preserved_baseline": true,
+  "next_gate": "C-07 A v4 coherent art/functional pass with real Godot screenshots, user visual review and Android benchmarking before any merge"
+}

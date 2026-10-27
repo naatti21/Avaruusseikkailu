@@ -8,10 +8,18 @@ class DesignStudyTests(unittest.TestCase):
  def test_reviewed_baseline_is_byte_identical(self):
   for name,sha in [('native-prototype/art/c07/source/c07_courier.blend','68086c196a1ec918f854e9e9522fba0b0b5da806c14536785c13c69cecd33808'),('native-prototype/production/models/c07_courier.glb','0e6eea9851d08c8764746b5b7dafc9c9a0126f1d0726a224ff8eff374122c3c0')]:
    self.assertEqual(hashlib.sha256((ROOT/name).read_bytes()).hexdigest(),sha)
- def test_choice_gate_is_unselected_and_unreleased(self):
-  d=json.loads(MANIFEST.read_text());self.assertIsNone(d['selected_option']);self.assertFalse(d['release_approved'])
-  self.assertEqual({x['option'] for x in d['options']},{'A','B'})
-  for a in d['options']:self.assertEqual(a['review_status'],'unselected');self.assertFalse(a['can_integrate'])
+ def test_choice_gate_records_a_only_as_design_direction(self):
+  d=json.loads(MANIFEST.read_text())
+  s=json.loads((MANIFEST.parent/'selection.json').read_text())
+  self.assertEqual(d['selected_option'],'A')
+  self.assertEqual(s['selected_option'],'A')
+  self.assertEqual(s['decision_type'],'design_direction_only')
+  self.assertFalse(d['release_approved'])
+  for key in ['owner_visual_approval','production_asset_approved','release_approved','can_integrate']:
+   self.assertFalse(s[key],key)
+  self.assertEqual({a['option']:a['review_status'] for a in d['options']},
+                   {'A':'selected_for_design','B':'reference_only'})
+  for a in d['options']:self.assertFalse(a['can_integrate'])
  def test_sources_have_hashes_lineage_and_separate_safe_paths(self):
   for a in json.loads(MANIFEST.read_text())['options']:
    self.assertEqual(a['base_commit'],'764452a583c9c61a38ef8b229925247ad61aa2e6')
