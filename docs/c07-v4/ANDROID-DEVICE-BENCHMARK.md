@@ -30,3 +30,13 @@ Vähimmäistavoite on vakaa 30 FPS Android-keskiluokassa, tehokkailla laitteilla
 - Android APK:t tehdään väliaikaisissa lähdekoodikopioissa ja testisignataan; niitä ei julkaista kauppaan.
 - GitHub CI-tulos vahvistaa vain rakentamisen ja automaattisen smoketestin, ei oikean puhelimen grafiikkaa tai lämpötilaa.
 - Testiartefaktin säilytys GitHubissa 7 päivää.
+
+## Valaistuksen vertailukierros (27.10.2026)
+
+Uusi kokeiluhaara tuo kolmannen tilan **TASAPAINO**. Painike kiertää nyt järjestyksessä **PELI → TASAPAINO → TARKASTUS → PELI**.
+
+- **PELI** on sama aikaisempi tumma lähtötaso. Se on säilytetty vertailukelpoisena.
+- **TASAPAINO** tuo metallille rajatut ympäristöheijastukset, hieman voimakkaamman päävalon, hillityn kylmän reunavalon ja täytevalon. Tausta pysyy tummana; tarkoitus ei ole valottaa koko avaruutta harmaaksi.
+- **TARKASTUS** pysyy aiemman APK:n kirkkaampana tarkastustilana. Mallia tai sen materiaaleja ei muuteta tilojen välillä.
+
+Ota puhelimella **KIERRÄ: EI**, sama **ETUVIISO** ja **TAKAVIISO** kaikilla kolmella valolla. Vertaile erityisesti moottorikehiä, keskirungon rakennetta, tavaramoduulien kylkiä ja sitä, säilyykö avaruuden kontrasti. Tarkista mahdollinen ylimääräinen pintahehku; jos metallista tulee muovinen tai kuvan varjot katoavat, uusi tila ei läpäise. Aiempi 0,1–0,4 minuutin FPS on vain lyhyt havainto. Vasta 10 minuutin saman laitteen testi kertoo lämpö- ja suorituskykyriskeistä.

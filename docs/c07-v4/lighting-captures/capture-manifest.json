@@ -1,0 +1,15 @@
+{
+	"capture_platform": "Linux Godot GL Compatibility desktop; NOT Android",
+	"model_sha256": "b555e0deffb77fa09d6aacea992b56cc2c5dd0945bb56d40c87c3690653f7458",
+	"renderer": "gl_compatibility",
+	"scene": "res://scenes/c07_a4_android_benchmark.tscn",
+	"views": [
+		"game-front.png",
+		"game-rear.png",
+		"balanced-front.png",
+		"balanced-rear.png",
+		"inspection-front.png",
+		"inspection-rear.png"
+	],
+	"visual_approval": false
+}

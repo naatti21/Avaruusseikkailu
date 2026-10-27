@@ -13,6 +13,11 @@ class C07A4AndroidTests(unittest.TestCase):
   self.assertIn("set_lighting",s)
   self.assertIn("set_view",s)
   self.assertIn("samples_ms",s)
+  self.assertIn("posmod(index,3)",s)
+  self.assertIn("Environment.REFLECTION_SOURCE_SKY",s)
+  self.assertIn("PELIN NYKYVALO",s)
+  self.assertIn("TASAPAINOTETTU",s)
+  self.assertIn("TARKASTUSVALO",s)
   self.assertIn('run/main_scene="res://scenes/main.tscn"',(BASE/"project.godot").read_text())
  def test_disposable_dual_export(self):
   s=(BASE/"tools/build_c07_a4_android.py").read_text()
