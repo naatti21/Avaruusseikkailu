@@ -1,0 +1,519 @@
+{
+  "base_commit": "7946fd67139e3e728fa2f3428109b535fbd71f03",
+  "tools": {
+    "blender": "4.3.2",
+    "godot": "4.7.2",
+    "renderer": "gl_compatibility",
+    "device": "Desktop Mesa software renderer, Xvfb; NOT Android"
+  },
+  "checks": [
+    {
+      "check": "build",
+      "command": [
+        "blender",
+        "--background",
+        "--python-exit-code",
+        "1",
+        "--python",
+        "native-prototype/art/c07-v4/build_candidate.py"
+      ],
+      "exit_code": 0
+    },
+    {
+      "check": "source",
+      "command": [
+        "blender",
+        "--background",
+        "native-prototype/art/c07-v4/source/c07_a_v4.blend",
+        "--python-exit-code",
+        "1",
+        "--python",
+        "native-prototype/art/c07-v4/check_source.py"
+      ],
+      "exit_code": 0
+    },
+    {
+      "check": "python",
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_*.py",
+        "-v"
+      ],
+      "exit_code": 0
+    },
+    {
+      "check": "node",
+      "command": [
+        "npm",
+        "test"
+      ],
+      "exit_code": 0
+    },
+    {
+      "check": "import",
+      "command": [
+        "/tmp/hero-tools/godot/Godot_v4.7.2-stable_linux.x86_64",
+        "--headless",
+        "--editor",
+        "--path",
+        "native-prototype",
+        "--import"
+      ],
+      "exit_code": 0
+    },
+    {
+      "check": "production_art_preview_smoke",
+      "command": [
+        "/tmp/hero-tools/godot/Godot_v4.7.2-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "native-prototype",
+        "--script",
+        "res://tools/production_art_preview_smoke.gd"
+      ],
+      "exit_code": 0
+    },
+    {
+      "check": "c07_review",
+      "command": [
+        "/tmp/hero-tools/godot/Godot_v4.7.2-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "native-prototype",
+        "--script",
+        "res://tools/c07_review.gd"
+      ],
+      "exit_code": 0
+    },
+    {
+      "check": "smoke",
+      "command": [
+        "/tmp/hero-tools/godot/Godot_v4.7.2-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "native-prototype",
+        "--script",
+        "res://tools/smoke.gd"
+      ],
+      "exit_code": 0
+    },
+    {
+      "check": "hero_smoke",
+      "command": [
+        "/tmp/hero-tools/godot/Godot_v4.7.2-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "native-prototype",
+        "--script",
+        "res://tools/hero_smoke.gd"
+      ],
+      "exit_code": 0
+    },
+    {
+      "check": "preserved-A",
+      "command": [
+        "/tmp/hero-tools/godot/Godot_v4.7.2-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "native-prototype",
+        "--script",
+        "res://tools/c07_design_review.gd"
+      ],
+      "exit_code": 0
+    },
+    {
+      "check": "preserved-B",
+      "command": [
+        "/tmp/hero-tools/godot/Godot_v4.7.2-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "native-prototype",
+        "--script",
+        "res://tools/c07_design_review.gd"
+      ],
+      "exit_code": 0
+    },
+    {
+      "check": "preserved-baseline",
+      "command": [
+        "/tmp/hero-tools/godot/Godot_v4.7.2-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "native-prototype",
+        "--script",
+        "res://tools/c07_design_review.gd"
+      ],
+      "exit_code": 0
+    },
+    {
+      "check": "capture-A3-studio",
+      "command": [
+        "/tmp/hero-tools/godot/Godot_v4.7.2-stable_linux.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "native-prototype",
+        "--rendering-method",
+        "gl_compatibility",
+        "--script",
+        "res://tools/c07_a_v4_review.gd",
+        "--",
+        "--capture"
+      ],
+      "exit_code": 0
+    },
+    {
+      "check": "capture-A3-game",
+      "command": [
+        "/tmp/hero-tools/godot/Godot_v4.7.2-stable_linux.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "native-prototype",
+        "--rendering-method",
+        "gl_compatibility",
+        "--script",
+        "res://tools/c07_a_v4_review.gd",
+        "--",
+        "--capture",
+        "--game-lighting"
+      ],
+      "exit_code": 0
+    },
+    {
+      "check": "capture-A3-closeups",
+      "command": [
+        "/tmp/hero-tools/godot/Godot_v4.7.2-stable_linux.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "native-prototype",
+        "--rendering-method",
+        "gl_compatibility",
+        "--script",
+        "res://tools/c07_a_v4_review.gd",
+        "--",
+        "--capture",
+        "--closeups"
+      ],
+      "exit_code": 0
+    },
+    {
+      "check": "capture-A4-studio",
+      "command": [
+        "/tmp/hero-tools/godot/Godot_v4.7.2-stable_linux.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "native-prototype",
+        "--rendering-method",
+        "gl_compatibility",
+        "--script",
+        "res://tools/c07_a_v4_review.gd",
+        "--",
+        "--capture"
+      ],
+      "exit_code": 0
+    },
+    {
+      "check": "capture-A4-game",
+      "command": [
+        "/tmp/hero-tools/godot/Godot_v4.7.2-stable_linux.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "native-prototype",
+        "--rendering-method",
+        "gl_compatibility",
+        "--script",
+        "res://tools/c07_a_v4_review.gd",
+        "--",
+        "--capture",
+        "--game-lighting"
+      ],
+      "exit_code": 0
+    },
+    {
+      "check": "capture-A4-closeups",
+      "command": [
+        "/tmp/hero-tools/godot/Godot_v4.7.2-stable_linux.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "native-prototype",
+        "--rendering-method",
+        "gl_compatibility",
+        "--script",
+        "res://tools/c07_a_v4_review.gd",
+        "--",
+        "--capture",
+        "--closeups"
+      ],
+      "exit_code": 0
+    },
+    {
+      "check": "python-delivery-including-render-linkage",
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_*.py",
+        "-v"
+      ],
+      "exit_code": 0,
+      "pass": 24,
+      "fail": 0,
+      "skip": 0
+    }
+  ],
+  "python": {
+    "pass": 24,
+    "fail": 0,
+    "skip": 0
+  },
+  "node": {
+    "pass": 9,
+    "fail": 0,
+    "skip": 0
+  },
+  "renders": [
+    {
+      "path": "docs/c07-v4/A3/closeups/cargo-locks.png",
+      "sha256": "88489a59add3ef0306455703f0fa4d3631062da251e92cf739114d9277b18528",
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "path": "docs/c07-v4/A3/closeups/cockpit.png",
+      "sha256": "64f211c98ea4d6addda9871a627e5e0261486917016c64595afe51a75e72d8f9",
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "path": "docs/c07-v4/A3/closeups/propulsion.png",
+      "sha256": "1130b4b38828ed56be723373b41e32d77560ae21c1e62e45a191636ff5c60b4c",
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "path": "docs/c07-v4/A3/game/rear-quarter.png",
+      "sha256": "571bc10ca4a560a4ed1ff4f5da0542832a6eeae7fa0e96a5e8067537c56d5d0e",
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "path": "docs/c07-v4/A3/game/three-quarter.png",
+      "sha256": "195d0e4aaa661589d029885081cb8ec395dd97defed295edf4db404174af4b8e",
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "path": "docs/c07-v4/A3/studio/front.png",
+      "sha256": "bf9f9f9e9d6c43dca7fdfa8c5d002763f4a050883c4429f3715e5883f5759483",
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "path": "docs/c07-v4/A3/studio/rear-quarter.png",
+      "sha256": "97631589e083df03056e3721d7f4792b591b4dd39392406d5a8c7e9e2a1bc306",
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "path": "docs/c07-v4/A3/studio/rear.png",
+      "sha256": "0ef89f27c5ffe0be61bfbe4ad05e77d9d61cd2b7356443948fd20adee76d310f",
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "path": "docs/c07-v4/A3/studio/side.png",
+      "sha256": "623df57f762d632ea0531d1bbeefc730a83699c15bf0c944d04abd395e79511c",
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "path": "docs/c07-v4/A3/studio/three-quarter.png",
+      "sha256": "ed9e2a35b3f6bd12bcd78dc467a4da5706e50b7c2b47f2ed7ab4cc95e9b7acb7",
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "path": "docs/c07-v4/A3/studio/top.png",
+      "sha256": "df0fec160957b1da432c6b8ece3d7dd91cd88568870e79e4aa39f26bb6d26969",
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "path": "docs/c07-v4/A4/closeups/cargo-locks.png",
+      "sha256": "9d91d6c521770e4211fbfa5ce414d38ccfdd88003c9cf405e36ae9e80fb1aaf4",
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "path": "docs/c07-v4/A4/closeups/cockpit.png",
+      "sha256": "079ab94b3fb8b97c79aee0de4bf10e2ef40a39513a5867f0ea2e904dcc15aabe",
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "path": "docs/c07-v4/A4/closeups/propulsion.png",
+      "sha256": "81c9cb915ff1d2a4b8e526fc3e7dbdf17ad5802a9269e8545d79c51726973f36",
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "path": "docs/c07-v4/A4/game/rear-quarter.png",
+      "sha256": "19aeaa3f5369dc51bce85324309e2cfdd8f98365845e645141a8352dc5b4e6c2",
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "path": "docs/c07-v4/A4/game/three-quarter.png",
+      "sha256": "4d0a7f160c920a881683f4f6b6643efbb703d76e382745d226a9bb70b1196546",
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "path": "docs/c07-v4/A4/studio/front.png",
+      "sha256": "caf37095ad9170fed16cf32b0f55e490e0e7f68fedbc655346acc9a12276f6ad",
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "path": "docs/c07-v4/A4/studio/rear-quarter.png",
+      "sha256": "d0d1b6f4e34ae20c3efdd6a7d9ba6d91982bafeca378d275d68bdfdb3dbee8c5",
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "path": "docs/c07-v4/A4/studio/rear.png",
+      "sha256": "2017bd09e99802834ffbce209177360d46cccfe0338ffde4990f9a6def00783a",
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "path": "docs/c07-v4/A4/studio/side.png",
+      "sha256": "5cb3ae9e6ca714285ded2b8cb380a26eff6a430445aaeb5b34be86c2d9560f04",
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "path": "docs/c07-v4/A4/studio/three-quarter.png",
+      "sha256": "740f06adfe13d75ffa40fe937d1efaf134f8028fe244ece5a0d3f5c9a3ba41e6",
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "path": "docs/c07-v4/A4/studio/top.png",
+      "sha256": "07a862ff2c19f93dc38ab1d955bbd80d681ecb2e5975f17fb757fe4680ce014d",
+      "size": [
+        1440,
+        1000
+      ]
+    }
+  ],
+  "metrics": {
+    "A3-studio": {
+      "draw_calls_range": [
+        26.0,
+        26.0
+      ],
+      "model_sha256": "4bbb1107719914a8704fd987a9620844cc2c9110399ce92ba8de9a336154768c"
+    },
+    "A3-game": {
+      "draw_calls_range": [
+        13.0,
+        13.0
+      ],
+      "model_sha256": "4bbb1107719914a8704fd987a9620844cc2c9110399ce92ba8de9a336154768c"
+    },
+    "A3-closeups": {
+      "draw_calls_range": [
+        14.0,
+        20.0
+      ],
+      "model_sha256": "4bbb1107719914a8704fd987a9620844cc2c9110399ce92ba8de9a336154768c"
+    },
+    "A4-studio": {
+      "draw_calls_range": [
+        18.0,
+        18.0
+      ],
+      "model_sha256": "b555e0deffb77fa09d6aacea992b56cc2c5dd0945bb56d40c87c3690653f7458"
+    },
+    "A4-game": {
+      "draw_calls_range": [
+        9.0,
+        9.0
+      ],
+      "model_sha256": "b555e0deffb77fa09d6aacea992b56cc2c5dd0945bb56d40c87c3690653f7458"
+    },
+    "A4-closeups": {
+      "draw_calls_range": [
+        16.0,
+        18.0
+      ],
+      "model_sha256": "b555e0deffb77fa09d6aacea992b56cc2c5dd0945bb56d40c87c3690653f7458"
+    }
+  },
+  "source_sha256": "54c8b4b6c9007713b8bbaf32486f38beaff6088288f7162b3d03b7f0b1836de0",
+  "glb_sha256": "b555e0deffb77fa09d6aacea992b56cc2c5dd0945bb56d40c87c3690653f7458",
+  "github_ci": "NOT VERIFIED",
+  "android": "NOT RUN: user visual gate first",
+  "owner_visual_approval": false,
+  "production_asset_approved": false,
+  "release_approved": false,
+  "can_integrate": false
+}
