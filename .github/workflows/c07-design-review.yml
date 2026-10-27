@@ -1,0 +1,53 @@
+name: C-07 silhouette choice QA
+on:
+  pull_request:
+    paths:
+      - "native-prototype/art/c07-v3/**"
+      - "native-prototype/design-review/c07-v3/**"
+      - "native-prototype/tools/c07_design_review.gd"
+      - "tests/test_c07_designs.py"
+      - ".github/workflows/c07-design-review.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  design-review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - name: Asset hashes, baseline preservation and geometry contracts
+        run: python3 -m unittest discover -s tests -p 'test_*.py' -v
+      - name: Install verified Godot 4.7.2
+        shell: bash
+        run: |
+          set -euo pipefail
+          base="https://github.com/godotengine/godot-builds/releases/download/4.7.2-stable"
+          curl --fail --location --retry 3 "$base/Godot_v4.7.2-stable_linux.x86_64.zip" -o "$RUNNER_TEMP/godot.zip"
+          curl --fail --location --retry 3 "$base/SHA512-SUMS.txt" -o "$RUNNER_TEMP/SHA512-SUMS.txt"
+          expected=$(awk '$2 == "Godot_v4.7.2-stable_linux.x86_64.zip" { print $1 }' "$RUNNER_TEMP/SHA512-SUMS.txt")
+          test "${#expected}" = 128
+          echo "$expected  $RUNNER_TEMP/godot.zip" | sha512sum --check --strict
+          unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/godot"
+          cp "$RUNNER_TEMP/godot/Godot_v4.7.2-stable_linux.x86_64" "$RUNNER_TEMP/godot-runner"
+          chmod +x "$RUNNER_TEMP/godot-runner"
+          echo "$RUNNER_TEMP" >> "$GITHUB_PATH"
+      - name: Real Godot import and six-view / game-light captures
+        shell: bash
+        run: |
+          set -euo pipefail
+          godot-runner --headless --editor --path native-prototype --quit
+          for design in A B baseline; do
+            export C07_DESIGN="$design"
+            godot-runner --headless --path native-prototype --script res://tools/c07_design_review.gd
+            C07_CAPTURE_DIR="$RUNNER_TEMP/designs/$design/studio" xvfb-run -a -s '-screen 0 1600x1200x24' godot-runner --audio-driver Dummy --path native-prototype --rendering-method gl_compatibility --script res://tools/c07_design_review.gd -- --capture
+            C07_CAPTURE_DIR="$RUNNER_TEMP/designs/$design/game" xvfb-run -a -s '-screen 0 1600x1200x24' godot-runner --audio-driver Dummy --path native-prototype --rendering-method gl_compatibility --script res://tools/c07_design_review.gd -- --capture --game-lighting
+          done
+      - uses: actions/upload-artifact@v4
+        with:
+          name: c07-A-B-baseline-choice
+          if-no-files-found: error
+          path: |
+            ${{ runner.temp }}/designs/
+            native-prototype/art/c07-v3/source/*.blend
+            native-prototype/design-review/c07-v3/

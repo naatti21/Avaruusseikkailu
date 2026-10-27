@@ -1,0 +1,44 @@
+{
+  "android_tested": false,
+  "cockpit_center_x_m": 0.0,
+  "dimensions_xyz_m": [
+    12.0429992675781,
+    7.96000003814697,
+    29.8600006103516
+  ],
+  "engine_stagger_m": null,
+  "lighting": "studio",
+  "materials": 1,
+  "model_sha256": "0e6eea9851d08c8764746b5b7dafc9c9a0126f1d0726a224ff8eff374122c3c0",
+  "option": "baseline",
+  "renderer": "gl_compatibility",
+  "selected": false,
+  "surfaces": 13,
+  "triangles": 87572,
+  "views": {
+    "front": {
+      "draw_calls": 26.0,
+      "primitives": 147542.0
+    },
+    "rear": {
+      "draw_calls": 26.0,
+      "primitives": 153128.0
+    },
+    "rear-quarter": {
+      "draw_calls": 26.0,
+      "primitives": 130974.0
+    },
+    "side": {
+      "draw_calls": 26.0,
+      "primitives": 124022.0
+    },
+    "three-quarter": {
+      "draw_calls": 26.0,
+      "primitives": 130974.0
+    },
+    "top": {
+      "draw_calls": 26.0,
+      "primitives": 111650.0
+    }
+  }
+}
