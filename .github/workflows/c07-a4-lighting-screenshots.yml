@@ -32,7 +32,7 @@ jobs:
           cp "$RUNNER_TEMP/godot/Godot_v4.7.2-stable_linux.x86_64" "$RUNNER_TEMP/godot-runner"
           chmod +x "$RUNNER_TEMP/godot-runner"
           echo "$RUNNER_TEMP" >> "$GITHUB_PATH"
-      - name: Capture all six views
+      - name: Capture all eight views
         shell: bash
         run: |
           set -euo pipefail
@@ -42,10 +42,10 @@ jobs:
             godot-runner --audio-driver Dummy --path native-prototype \
             --rendering-method gl_compatibility \
             --script res://tools/c07_a4_lighting_capture.gd
-          test "$(find "$C07_CAPTURE_DIR" -maxdepth 1 -name '*.png' | wc -l)" -eq 6
+          test "$(find "$C07_CAPTURE_DIR" -maxdepth 1 -name '*.png' | wc -l)" -eq 8
       - uses: actions/upload-artifact@v4
         with:
-          name: c07-a4-three-light-modes-screenshots
+          name: c07-a4-four-light-modes-screenshots
           path: docs/c07-v4/lighting-captures/
           retention-days: 14
       - name: Publish captures to design branch

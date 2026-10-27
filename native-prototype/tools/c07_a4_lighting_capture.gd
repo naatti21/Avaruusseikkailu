@@ -36,7 +36,7 @@ func _run() -> void:
 		printerr("FAIL: art candidate was changed")
 		quit(1)
 		return
-	var modes := ["game","balanced","inspection"]
+	var modes := ["game","balanced","inspection","hero"]
 	var record := {
 		"model_sha256":FileAccess.get_sha256(MODEL),
 		"scene":SCENE,
@@ -46,7 +46,7 @@ func _run() -> void:
 		"views":[]
 	}
 	var failed := false
-	for mode in range(3):
+	for mode in range(4):
 		stage.set_lighting(mode)
 		for angle in [0,2]:
 			stage.set_view(angle)
@@ -67,4 +67,4 @@ func _run() -> void:
 	f.close()
 	stage.queue_free()
 	await process_frame
-	quit(1 if failed or record["views"].size()!=6 else 0)
+	quit(1 if failed or record["views"].size()!=8 else 0)
