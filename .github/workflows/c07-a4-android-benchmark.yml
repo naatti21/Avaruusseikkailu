@@ -1,0 +1,68 @@
+name: C-07 A4 Android visual benchmark
+on:
+  pull_request:
+    paths:
+      - "native-prototype/scripts/c07_a4_android_benchmark.gd"
+      - "native-prototype/scenes/c07_a4_android_benchmark.tscn"
+      - "native-prototype/tools/c07_a4_android_smoke.gd"
+      - "native-prototype/tools/build_c07_a4_android.py"
+      - "tests/test_c07_a4_android.py"
+      - ".github/workflows/c07-a4-android-benchmark.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  dual-apks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    env:
+      GODOT_TAG: "4.7.2-stable"
+      GODOT_VERSION_DIR: "4.7.2.stable"
+    steps:
+      - uses: actions/checkout@v4
+      - name: Candidate hash tests
+        run: |
+          python3 -m unittest discover -s tests -p test_c07_a4_android.py -v
+          python3 -m py_compile native-prototype/tools/build_c07_a4_android.py
+      - name: Install Godot and Android export template
+        shell: bash
+        run: |
+          set -euo pipefail
+          base="https://github.com/godotengine/godot-builds/releases/download/$GODOT_TAG"
+          curl --fail --location --retry 3 "$base/Godot_v4.7.2-stable_linux.x86_64.zip" -o "$RUNNER_TEMP/godot.zip"
+          unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/godot"
+          cp "$RUNNER_TEMP/godot/Godot_v4.7.2-stable_linux.x86_64" "$RUNNER_TEMP/godot-runner"
+          chmod +x "$RUNNER_TEMP/godot-runner"
+          echo "$RUNNER_TEMP" >> "$GITHUB_PATH"
+          curl --fail --location --retry 3 "$base/Godot_v4.7.2-stable_export_templates.tpz" -o "$RUNNER_TEMP/templates.tpz"
+          dest="$HOME/.local/share/godot/export_templates/$GODOT_VERSION_DIR"
+          mkdir -p "$dest"
+          unzip -q -j "$RUNNER_TEMP/templates.tpz" 'templates/android_debug.apk' 'templates/version.txt' -d "$dest"
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+      - uses: android-actions/setup-android@v3
+        with:
+          packages: platform-tools
+      - name: Android SDK and debug signing
+        shell: bash
+        run: |
+          set -euo pipefail
+          yes | sdkmanager --licenses > /dev/null || true
+          sdkmanager "platform-tools" "platforms;android-36" "build-tools;36.0.0"
+          keytool -genkeypair -noprompt -alias androiddebugkey -keyalg RSA -keysize 2048 -validity 1000 -keystore "$RUNNER_TEMP/debug.keystore" -storepass android -keypass android -dname "CN=Android Debug,O=Android,C=US"
+          echo "GODOT_ANDROID_KEYSTORE_DEBUG_PATH=$RUNNER_TEMP/debug.keystore" >> "$GITHUB_ENV"
+          echo "GODOT_ANDROID_KEYSTORE_DEBUG_USER=androiddebugkey" >> "$GITHUB_ENV"
+          echo "GODOT_ANDROID_KEYSTORE_DEBUG_PASSWORD=android" >> "$GITHUB_ENV"
+      - name: Export two debug variants
+        run: |
+          python3 native-prototype/tools/build_c07_a4_android.py --godot "$RUNNER_TEMP/godot-runner" --output "$PWD/native-prototype/build/c07-a4" --sdk "$ANDROID_HOME" --java "$JAVA_HOME"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: c07-a4-mobile-vs-compat-apks
+          if-no-files-found: error
+          retention-days: 7
+          path: |
+            native-prototype/build/c07-a4/c07-a4-*.apk
+            native-prototype/build/c07-a4/APK-MANIFEST.json
