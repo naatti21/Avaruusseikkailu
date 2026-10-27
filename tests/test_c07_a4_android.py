@@ -16,7 +16,7 @@ class C07A4AndroidTests(unittest.TestCase):
   self.assertIn("posmod(index,4)",s)
   self.assertIn("engine_bounce.visible = true",s)
   self.assertIn("HERO / KOHDEVALO",s)
-  self.assertIn("posmod(index,3)",s)
+  self.assertIn("posmod(index,4)",s)
   self.assertIn("Environment.REFLECTION_SOURCE_SKY",s)
   self.assertIn("PELIN NYKYVALO",s)
   self.assertIn("TASAPAINOTETTU",s)
