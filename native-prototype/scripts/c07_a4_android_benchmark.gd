@@ -7,6 +7,7 @@ var env_node: WorldEnvironment
 var sun: DirectionalLight3D
 var fill: DirectionalLight3D
 var rim: DirectionalLight3D
+var engine_bounce: OmniLight3D
 var title_label: Label
 var metrics_label: Label
 var view_button: Button
@@ -68,6 +69,15 @@ func _world() -> void:
 	rim.light_energy = 0.75
 	rim.visible = false
 	add_child(rim)
+	# Only used by the HERO test: nearby port/station-style spill for the
+	# aft engine recesses, not a permanent light baked into the spacecraft.
+	engine_bounce = OmniLight3D.new()
+	engine_bounce.position = Vector3(0.0,1.0,-18.0)
+	engine_bounce.light_color = Color(0.54,0.76,1.0)
+	engine_bounce.light_energy = 3.4
+	engine_bounce.omni_range = 30.0
+	engine_bounce.visible = false
+	add_child(engine_bounce)
 
 func _model() -> void:
 	var packed := load(MODEL) as PackedScene
@@ -179,14 +189,19 @@ func set_lighting(index: int) -> void:
 	# 0 = ORIGINAL game light (pixel-faithful reference for the old APK).
 	# 1 = BALANCED CINEMATIC experiment (reflection + controlled fill/rim).
 	# 2 = ORIGINAL inspection fill (pixel-faithful reference for the old APK).
+	# 3 = HERO visibility test: deliberate star key + reflected station fill.
 	# The C-07 GLB and all of its textures remain unchanged in every mode.
-	lighting_index = posmod(index,3)
+	lighting_index = posmod(index,4)
 	var environment: Environment = env_node.environment
 	environment.reflected_light_source = Environment.REFLECTION_SOURCE_BG
 	environment.ambient_light_energy = 0.85
+	environment.ambient_light_color = Color(0.36,0.49,0.62)
 	sun.light_energy = 2.0
+	fill.light_energy = 0.8
+	rim.light_energy = 0.75
 	fill.visible = false
 	rim.visible = false
+	engine_bounce.visible = false
 	match lighting_index:
 		1:
 			environment.reflected_light_source = Environment.REFLECTION_SOURCE_SKY
@@ -197,6 +212,18 @@ func set_lighting(index: int) -> void:
 		2:
 			environment.ambient_light_energy = 1.2
 			fill.visible = true
+		3:
+			# Intentionally stronger than the ineffective balanced pass:
+			# asymmetric key, cool restrained shadow fill, engine-port bounce.
+			environment.reflected_light_source = Environment.REFLECTION_SOURCE_SKY
+			environment.ambient_light_color = Color(0.48,0.54,0.62)
+			environment.ambient_light_energy = 1.25
+			sun.light_energy = 4.3
+			fill.light_energy = 2.5
+			rim.light_energy = 2.5
+			fill.visible = true
+			rim.visible = true
+			engine_bounce.visible = true
 	reset_metrics()
 	_update_labels()
 
@@ -214,8 +241,8 @@ func reset_metrics() -> void:
 func _update_labels() -> void:
 	if title_label == null:
 		return
-	var light_names: Array[String] = ["PELIN NYKYVALO", "TASAPAINOTETTU", "TARKASTUSVALO"]
-	var short_names: Array[String] = ["PELI", "TASAPAINO", "TARKASTUS"]
+	var light_names: Array[String] = ["PELIN NYKYVALO", "TASAPAINOTETTU", "TARKASTUSVALO", "HERO / KOHDEVALO"]
+	var short_names: Array[String] = ["PELI", "TASAPAINO", "TARKASTUS", "HERO"]
 	var light_name: String = light_names[lighting_index]
 	title_label.text = "C-07 A4 | VAIN GRAFIIKKATESTI\n%s | %s\nEI HYVÄKSYTTY PELIMALLI" % [_view_label(),light_name]
 	if view_button != null:

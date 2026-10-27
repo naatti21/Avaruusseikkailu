@@ -29,14 +29,20 @@ func _run() -> void:
 	ok = ok and absf(stage.env_node.environment.ambient_light_energy-1.2)<0.001
 	ok = ok and stage.env_node.environment.reflected_light_source == Environment.REFLECTION_SOURCE_BG
 	stage.set_lighting(3)
+	ok = ok and stage.lighting_index == 3 and stage.fill.visible and stage.rim.visible
+	ok = ok and stage.engine_bounce.visible
+	ok = ok and stage.sun.light_energy > 4.0
+	stage.set_lighting(4)
 	ok = ok and stage.lighting_index == 0 and not stage.fill.visible and not stage.rim.visible
+	ok = ok and not stage.engine_bounce.visible
+	ok = ok and absf(stage.sun.light_energy-2.0)<0.001
 	ok = ok and absf(stage.env_node.environment.ambient_light_energy-0.85)<0.001
 	stage.reset_metrics()
 	ok = ok and stage.samples_ms.is_empty() and stage.measured_seconds == 0
 	stage.queue_free()
 	await process_frame
 	if ok:
-		print("PASS: same A4 GLB, unit scale, 4 views, 3 lighting modes, no production selection")
+		print("PASS: same A4 GLB, unit scale, 4 views, 4 lighting modes, no production selection")
 		quit(0)
 	else:
 		printerr("FAIL: C-07 A4 Android benchmark guardrails")

@@ -9,7 +9,9 @@
 		"balanced-front.png",
 		"balanced-rear.png",
 		"inspection-front.png",
-		"inspection-rear.png"
+		"inspection-rear.png",
+		"hero-front.png",
+		"hero-rear.png"
 	],
 	"visual_approval": false
 }
