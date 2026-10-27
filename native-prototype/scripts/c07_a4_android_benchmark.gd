@@ -6,6 +6,7 @@ var camera: Camera3D
 var env_node: WorldEnvironment
 var sun: DirectionalLight3D
 var fill: DirectionalLight3D
+var rim: DirectionalLight3D
 var title_label: Label
 var metrics_label: Label
 var view_button: Button
@@ -32,6 +33,17 @@ func _world() -> void:
 	var e := Environment.new()
 	e.background_mode = Environment.BG_COLOR
 	e.background_color = Color(0.006,0.012,0.029)
+	# In the balanced mode, the procedural sky is REFLECTION lighting only.
+	# Keep the background dark: no bright painted space backdrop.
+	var reflection_sky := Sky.new()
+	var sky_material := ProceduralSkyMaterial.new()
+	sky_material.sky_top_color = Color(0.20,0.27,0.35)
+	sky_material.sky_horizon_color = Color(0.48,0.53,0.58)
+	sky_material.ground_bottom_color = Color(0.07,0.10,0.14)
+	sky_material.ground_horizon_color = Color(0.31,0.38,0.44)
+	reflection_sky.sky_material = sky_material
+	e.sky = reflection_sky
+	e.reflected_light_source = Environment.REFLECTION_SOURCE_BG
 	e.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
 	e.ambient_light_color = Color(0.36,0.49,0.62)
 	e.ambient_light_energy = 0.85
@@ -48,6 +60,14 @@ func _world() -> void:
 	fill.light_energy = 0.8
 	fill.visible = false
 	add_child(fill)
+	# Separately controllable cool rim to reveal engine silhouette without
+	# lifting the entire shadow side into a flat grey.
+	rim = DirectionalLight3D.new()
+	rim.rotation_degrees = Vector3(-12.0,165.0,0.0)
+	rim.light_color = Color(0.45,0.66,0.90)
+	rim.light_energy = 0.75
+	rim.visible = false
+	add_child(rim)
 
 func _model() -> void:
 	var packed := load(MODEL) as PackedScene
@@ -156,9 +176,27 @@ func set_view(index: int) -> void:
 	_update_labels()
 
 func set_lighting(index: int) -> void:
-	lighting_index = posmod(index,2)
-	env_node.environment.ambient_light_energy = 0.85 if lighting_index == 0 else 1.2
-	fill.visible = lighting_index == 1
+	# 0 = ORIGINAL game light (pixel-faithful reference for the old APK).
+	# 1 = BALANCED CINEMATIC experiment (reflection + controlled fill/rim).
+	# 2 = ORIGINAL inspection fill (pixel-faithful reference for the old APK).
+	# The C-07 GLB and all of its textures remain unchanged in every mode.
+	lighting_index = posmod(index,3)
+	var environment: Environment = env_node.environment
+	environment.reflected_light_source = Environment.REFLECTION_SOURCE_BG
+	environment.ambient_light_energy = 0.85
+	sun.light_energy = 2.0
+	fill.visible = false
+	rim.visible = false
+	match lighting_index:
+		1:
+			environment.reflected_light_source = Environment.REFLECTION_SOURCE_SKY
+			environment.ambient_light_energy = 1.0
+			sun.light_energy = 2.35
+			fill.visible = true
+			rim.visible = true
+		2:
+			environment.ambient_light_energy = 1.2
+			fill.visible = true
 	reset_metrics()
 	_update_labels()
 
@@ -176,11 +214,13 @@ func reset_metrics() -> void:
 func _update_labels() -> void:
 	if title_label == null:
 		return
-	var light_name := "PELIN NYKYVALO" if lighting_index == 0 else "TARKASTUSVALO"
+	var light_names: Array[String] = ["PELIN NYKYVALO", "TASAPAINOTETTU", "TARKASTUSVALO"]
+	var short_names: Array[String] = ["PELI", "TASAPAINO", "TARKASTUS"]
+	var light_name: String = light_names[lighting_index]
 	title_label.text = "C-07 A4 | VAIN GRAFIIKKATESTI\n%s | %s\nEI HYVÄKSYTTY PELIMALLI" % [_view_label(),light_name]
 	if view_button != null:
 		view_button.text = "KULMA: %s" % _view_label()
-		lighting_button.text = "VALO: %s" % ("PELI" if lighting_index == 0 else "TARKASTUS")
+		lighting_button.text = "VALO: %s" % short_names[lighting_index]
 		orbit_button.text = "KIERRÄ: %s" % ("KYLLÄ" if orbiting else "EI")
 
 func _process(delta: float) -> void:
